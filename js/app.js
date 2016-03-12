@@ -2,6 +2,8 @@ var element = document.body;
 var instructions = document.getElementById('instructions');
 var healthBar = document.querySelector('#health');
 var enemiesRemaining;
+var currentRound;
+var playerScore;
 //Sets up pointer lock
 var pointerlockchange = function(event) {
   controls.enabled = true;
@@ -12,6 +14,23 @@ instructions.addEventListener('click', function(event) {
   instructions.style.display = 'none';
   element.requestPointerLock();
 });
+
+var red = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
+  color: 0xff0000,
+  opacity: 0.6,
+  transparent: true
+});
+var blue = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
+  color: 0x0000ff,
+  opacity: 0.6,
+  transparent: true
+});
+var green = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
+  color: 0x00ff00,
+  opacity: 0.6,
+  transparent: true
+});
+
 
 var world, physicsMaterial;
 var camera, scene, renderer;
@@ -24,18 +43,69 @@ var floorGeometry, floorMaterial, floor;
 var player = {
   maxHealth: 10,
   health: 10,
-  damage: 1
+  damage: 1,
+  score: 0,
+  die: function() {
+    healthBar.style.width = '100%';
+    player.health = 10;
+    player.maxHealth = 10;
+    player.score = 0;
+    playerScore.innerHTML = player.score;
+    round.loss = true;
+  }
 };
 var round = {
-  number: 1,
-  multiplier: 1,
-  isOver: false
+  number: 0,
+  multiplier: 0.9,
+  enemiesRemaining: 0,
+  willStart: true,
+  isOver: false,
+  loss: false,
+  end: function() {
+    enemies = [];
+    round.isOver = true;
+    gate.toggle();
+    startNextRound.innerHTML = 'press ENTER to begin the next round';
+    window.addEventListener('keydown', function(e) {
+      if (e.keyCode === 13 && !round.enemiesRemaining && player.body.position.z < 15) {
+        round.willStart = true;
+      }
+    });
+  },
+  start: function() {
+    makeEnemies();
+    round.number++;
+    round.multiplier += 0.1;
+    currentRound.innerHTML = 'Round ' + round.number;
+
+    context1.clearRect(0, 0, canvas1.width, canvas1.height);
+    context1.fillText('Round ' + round.number, 70, 50);
+    var texture1 = new THREE.Texture(canvas1);
+    texture1.needsUpdate = true;
+    mesh1.material.map = texture1;
+
+    gate.toggle();
+    round.willStart = false;
+    round.isOver = false;
+    startNextRound.innerHTML = '';
+  },
+  lose: function() {
+    enemies.forEach(function(enemy) {
+      world.remove(enemy.body);
+      scene.remove(enemy.mesh);
+    });
+    enemies = [];
+    round.number = 0;
+    round.multiplier = 0.9;
+    round.enemiesRemaining = 0;
+    round.loss = false;
+  }
 };
 var gate = {
   bars: [],
   isOpen: false,
   toggle: function() {
-    if(gate.isOpen) {
+    if (gate.isOpen) {
       gate.bars.forEach(function(bar) {
         scene.add(bar);
       });
@@ -153,10 +223,54 @@ function initThree() {
   enemiesRemaining.id = 'enemies-remaining';
   element.appendChild(enemiesRemaining);
 
-  var currentRound = document.createElement('h1');
+  currentRound = document.createElement('h1');
   currentRound.innerHTML = 'Round ' + round.number;
   currentRound.id = 'round';
   element.appendChild(currentRound);
+
+  playerName = document.createElement('h1');
+  playerName.innerHTML = 'KOFF01';
+  playerName.id = 'player-name';
+  element.appendChild(playerName);
+
+  playerScore = document.createElement('h3');
+  playerScore.innerHTML = player.score;
+  playerScore.id = 'score';
+  element.appendChild(playerScore);
+
+  startNextRound = document.createElement('h1');
+  startNextRound.innerHTML = '';
+  startNextRound.id = 'next-round';
+  element.appendChild(startNextRound);
+
+  ///////////////////////////////////////////////////////
+  //Begin Text Example
+  ///////////////////////////////////////////////////////
+  canvas1 = document.createElement('canvas');
+  context1 = canvas1.getContext('2d');
+  context1.font = "Bold 40px Arial";
+  context1.fillStyle = "rgba(255,0,0,0.95)";
+  context1.fillText('Round ' + round.number, 70, 50);
+
+  // canvas contents will be used for a texture
+  var texture1 = new THREE.Texture(canvas1)
+  texture1.needsUpdate = true;
+
+  var material1 = new THREE.MeshBasicMaterial({
+    map: texture1,
+    side: THREE.DoubleSide
+  });
+  material1.transparent = true;
+
+  mesh1 = new THREE.Mesh(
+    new THREE.PlaneGeometry(canvas1.width / 20, canvas1.height / 20),
+    material1
+  );
+  mesh1.position.set(0, 10, 0);
+  scene.add(mesh1);
+  ///////////////////////////////////////////////////////
+  //End Text Example
+  ///////////////////////////////////////////////////////
 
   // floor
   var floorGeometry = new THREE.PlaneGeometry(300, 300, 50, 50);
@@ -183,7 +297,6 @@ function initThree() {
 
   //Make arena
   makeStadium();
-  makeEnemies();
 }
 
 function animate() {
@@ -199,12 +312,10 @@ function animate() {
         //Update ballMeshes(view) quaternion to equal the ballBodys(physics) for 3D rotation calculation
         projectiles[i].mesh.quaternion.copy(projectiles[i].body.quaternion);
 
-        projectiles[i].duration -= 1;
+        projectiles[i].duration--;
         //If projectile duration is up remove it
-        if(projectiles[i].duration === 0) {
-          world.remove(projectiles[i].body);
-          scene.remove(projectiles[i].mesh);
-          projectiles.splice(i, 1);
+        if (projectiles[i].duration === 0) {
+          projectiles[i].remove();
           i--;
         }
       }
@@ -215,57 +326,36 @@ function animate() {
         //Update boxMeshes(view) quaternion to equal the boxBodys(physics) for 3D rotation calculation
         environmentObject.mesh.quaternion.copy(environmentObject.body.quaternion);
       });
-      var enemiesAlive = 0;
+      round.enemiesRemaining = 0;
       for (var k = 0; k < enemies.length; k++) {
         if (!enemies[k].direction || count % 60 === 0) {
           enemies[k].direction = Math.random();
         }
-        if (enemies[k].direction < 0.26) {
-          enemies[k].body.position.x += enemies[k].speed;
-        } else if (enemies[k].direction < 0.51) {
-          enemies[k].body.position.z += enemies[k].speed;
-        } else if (enemies[k].direction < 0.76) {
-          enemies[k].body.position.x -= enemies[k].speed;
-        } else {
-          enemies[k].body.position.z -= enemies[k].speed;
+        enemies[k].move();
+        if (enemies[k].health <= 0 && !enemies[k].isDead) {
+          enemies[k].die();
         }
-        enemies[k].body.position.y += 0.1;
-        if(enemies[k].health <= 0 && !enemies[k].isDead) {
-          enemies[k].isDead = true;
-          scene.remove(enemies[k].mesh);
-          world.remove(enemies[k].body);
-        }
-        if(enemies[k].health % 3  === 0) {
-          var green = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
-            color: 0x00ff00,
-            opacity: 0.6,
-            transparent: true
-          });
+        if (enemies[k].health / enemies[k].maxHealth > 0.67) {
           enemies[k].mesh.material = green;
-        } else if(enemies[k].health % 2  === 0) {
-          var blue = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
-            color: 0x0000ff,
-            opacity: 0.6,
-            transparent: true
-          });
+        } else if (enemies[k].health / enemies[k].maxHealth > 0.34) {
           enemies[k].mesh.material = blue;
         } else {
-          var red = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
-            color: 0xff0000,
-            opacity: 0.6,
-            transparent: true
-          });
           enemies[k].mesh.material = red;
         }
         enemies[k].mesh.position.copy(enemies[k].body.position);
-        if(!enemies[k].isDead) {
-          enemiesAlive++;
+        if (!enemies[k].isDead) {
+          round.enemiesRemaining++;
         }
       }
-      enemiesRemaining.innerHTML = 'Enemies Remaining ' + enemiesAlive;
-      if(!enemiesAlive && !round.isOver) {
-        enemies = [];
-        round.isOver = true;
+      enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
+      if (!round.enemiesRemaining && !round.isOver) {
+        round.end();
+      }
+      if (round.willStart && player.body.position.z < 15) {
+        round.start();
+      }
+      if (round.loss) {
+        round.lose()
       }
       if (count === 240) {
         count = 0;
@@ -316,7 +406,12 @@ window.addEventListener("click", function(event) {
     projectiles.push({
       body: ballBody,
       mesh: ballMesh,
-      duration: 180
+      duration: 180,
+      remove: function() {
+        world.remove(this.body);
+        scene.remove(this.mesh);
+        projectiles.splice(projectiles.indexOf(this), 1);
+      }
     });
     getShootDir(shootDirection); //Pass in a vector
     //Set the velocity of the ball that is shot
@@ -379,6 +474,7 @@ function makeStadium() {
     //Return Three Mesh
     return pillarMesh;
   }
+
   function createStadiumGate() {
     var bars = [{
       position: new THREE.Vector3(0, 3, 18),
@@ -414,7 +510,6 @@ function makeStadium() {
     gate.body = wallBody;
   }
   createStadiumGate();
-  gate.toggle();
 
   var wallMaterial = new THREE.MeshLambertMaterial({
     color: 0x111122
@@ -518,9 +613,8 @@ function makeEnemies() {
 
     //Set up Enemy Collision
     cubeBody.addEventListener("collide", function(event) {
-      if(event.body.projectileId >= 0) {
-        enemies[event.target.cubeEnemyId].health -= player.damage;
-        console.log('enemy ' + event.target.cubeEnemyId + ' health = ' + enemies[event.target.cubeEnemyId].health);
+      if (event.body.projectileId >= 0) {
+        enemies[event.target.cubeEnemyId].takeDamage();
       }
     });
 
@@ -554,9 +648,37 @@ function makeEnemies() {
       body: cubeEnemy.body,
       mesh: cubeEnemy.mesh,
       speed: 0.05 * round.multiplier,
+      maxHealth: 3 * round.multiplier,
       health: 3 * round.multiplier,
       damage: 1 * round.multiplier,
-      isDead: false
+      isDead: false,
+      move: function() {
+        switch (true) {
+          case (this.direction < 0.26):
+            this.body.position.x += this.speed;
+            break;
+          case (this.direction < 0.51):
+            this.body.position.z += this.speed;
+            break;
+          case (this.direction < 0.76):
+            this.body.position.x -= this.speed;
+            break;
+          case (this.direction < 1):
+            this.body.position.z -= this.speed;
+            break;
+        }
+        this.body.position.y += 0.1;
+      },
+      takeDamage: function() {
+        this.health -= player.damage;
+        player.score += Math.round(100 * round.multiplier);
+        playerScore.innerHTML = player.score;
+      },
+      die: function() {
+        this.isDead = true;
+        scene.remove(this.mesh);
+        world.remove(this.body);
+      }
     });
   });
 }

@@ -69,3 +69,26 @@ body {
   text-align: center;
   cursor: pointer;
 }
+#player-name {
+  position: absolute;
+  right: 7%;
+  top: -1%;
+  z-index: 2;
+  display: block;
+  text-align: right;
+}
+#score {
+  position: absolute;
+  right: 8.5%;
+  top: 4.5%;
+  z-index: 2;
+  display: block;
+}
+#next-round {
+  position: absolute;
+  left: 30%;
+  top: 40%;
+  z-index: 2;
+  display: block;
+  color: white;
+}

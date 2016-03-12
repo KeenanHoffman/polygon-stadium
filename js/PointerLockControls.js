@@ -24,17 +24,27 @@ var PointerLockControls = function(camera, cannonBody) {
   var upAxis = new CANNON.Vec3(0, 1, 0);
   cannonBody.addEventListener("collide", function(event) {
     //Check if an enemy collided with the player
-    if(event.body.cubeEnemyId) {
+    var healthPercentage = Math.round(player.health / player.maxHealth * 100);
+    if (event.body.cubeEnemyId) {
       player.health -= enemies[event.body.cubeEnemyId].damage;
-      healthBar.style.width = Math.round(player.health / player.maxHealth * 100) + '%';
-      document.querySelector('#life-counter').innerHTML = Math.round(player.health / player.maxHealth * 100) + '%';
-      if(player.health/player.maxHealth < 0.21) {
+      if (healthPercentage <= 0) {
+        player.die();
+        // enemies.forEach(function(enemy) {
+        //   world.remove(enemy.body);
+        //   scene.remove(enemy.mesh);
+        // });
+        // enemies = [];
+      } else {
+        healthBar.style.width = healthPercentage + '%';
+      }
+      document.querySelector('#life-counter').innerHTML = healthPercentage + '%';
+      if (healthPercentage < 21) {
         healthBar.style.background = 'linear-gradient(to top, #F44336, #C62828)';
-      } else if(player.health/player.maxHealth < 0.41) {
+      } else if (healthPercentage < 41) {
         healthBar.style.background = 'linear-gradient(to top, #FF9800, #EF6C00)';
-      } else if(player.health/player.maxHealth < 0.61) {
+      } else if (healthPercentage < 61) {
         healthBar.style.background = 'linear-gradient(to top, #FFEB3B, #F9A825)';
-      } else if(player.health/player.maxHealth < 0.81) {
+      } else if (healthPercentage < 81) {
         healthBar.style.background = 'linear-gradient(to top, #4CAF50, #2E7D32)';
       } else {
         healthBar.style.background = 'linear-gradient(to top, #2196F3, #1565C0)';
@@ -50,8 +60,9 @@ var PointerLockControls = function(camera, cannonBody) {
       contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
 
     // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
-    if (contactNormal.dot(upAxis) > 0.5) // Use a "good" threshold value between 0 and 1 here!
+    if (contactNormal.dot(upAxis) > 0.5) {// Use a "good" threshold value between 0 and 1 here!
       canJump = true;
+    }
   });
 
   var velocity = cannonBody.velocity;
