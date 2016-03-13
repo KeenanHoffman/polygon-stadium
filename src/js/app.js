@@ -1,3 +1,5 @@
+'use strict';
+
 var element = document.body;
 var instructions = document.getElementById('instructions');
 var startNextRound;
@@ -5,12 +7,18 @@ var context1;
 var canvas1;
 var mesh1;
 //Sets up pointer lock
-var pointerlockchange = function(event) {
-  controls.enabled = true;
-  instructions.style.display = 'none';
+var pointerlockchange = function() {
+  if (document.pointerLockElement === element) {
+    controls.enabled = true;
+    instructions.style.display = 'none';
+  } else {
+    controls.enabled = false;
+    instructions.style.display = 'inline-block';
+  }
+
 };
 document.addEventListener('pointerlockchange', pointerlockchange, false);
-instructions.addEventListener('click', function(event) {
+instructions.addEventListener('click', function() {
   instructions.style.display = 'none';
   element.requestPointerLock();
 });
@@ -39,14 +47,14 @@ var green = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
 });
 
 
-var world, physicsMaterial;
+var world; //physicsMaterial;
 var camera, scene, renderer;
 var environmentObjects = [];
 var projectiles = [];
 var projectileNumber = 0;
 var enemies = [];
-var boxGeometry, boxMaterial, box;
-var floorGeometry, floorMaterial, floor;
+// var boxGeometry, boxMaterial, box;
+// var floorGeometry, floorMaterial, floor;
 var player = {
   maxHealth: 10,
   health: 10,
@@ -79,8 +87,10 @@ var round = {
     gate.toggle();
     startNextRound.innerHTML = 'press ENTER to begin the next round';
     window.addEventListener('keydown', function(e) {
-      if (e.keyCode === 13 && !round.enemiesRemaining && player.body.position.z < 15) {
-        round.willStart = true;
+      if (controls.enabled) {
+        if (e.keyCode === 13 && !round.enemiesRemaining && player.body.position.z < 15) {
+          round.willStart = true;
+        }
       }
     });
   },
@@ -138,8 +148,8 @@ var count = 0;
 var controls;
 var time = Date.now();
 var dt = 1 / 60;
-var pause = false;
-var vector = new THREE.Vector3(0, 0, 0);
+// var pause = false;
+// var vector = new THREE.Vector3(0, 0, 0);
 initCannon();
 initThree();
 animate();
@@ -293,73 +303,73 @@ function initThree() {
 
 function animate() {
   requestAnimationFrame(animate);
-  if (!pause) { //Check if game is paused, do not proggress animation if game is paused
-    if (controls.enabled) {
-      count++;
-      world.step(dt); //Update world dt(1/60)th of a second
-      // Update ball positions
-      for (var i = 0; i < projectiles.length; i++) {
-        //Update ballMeshes(view) position to equal the ballBody(physics)
-        projectiles[i].mesh.position.copy(projectiles[i].body.position);
-        //Update ballMeshes(view) quaternion to equal the ballBodys(physics) for 3D rotation calculation
-        projectiles[i].mesh.quaternion.copy(projectiles[i].body.quaternion);
+  // if (!pause) { //Check if game is paused, do not proggress animation if game is paused
+  if (controls.enabled) {
+    count++;
+    world.step(dt); //Update world dt(1/60)th of a second
+    // Update ball positions
+    for (var i = 0; i < projectiles.length; i++) {
+      //Update ballMeshes(view) position to equal the ballBody(physics)
+      projectiles[i].mesh.position.copy(projectiles[i].body.position);
+      //Update ballMeshes(view) quaternion to equal the ballBodys(physics) for 3D rotation calculation
+      projectiles[i].mesh.quaternion.copy(projectiles[i].body.quaternion);
 
-        projectiles[i].duration--;
-        //If projectile duration is up remove it
-        if (projectiles[i].duration === 0) {
-          projectiles[i].remove();
-          i--;
-        }
-      }
-      // Update box positions
-      environmentObjects.forEach(function(environmentObject) {
-        //Update boxMeshes(view) position to equal the boxBodys(physics)
-        environmentObject.mesh.position.copy(environmentObject.body.position);
-        //Update boxMeshes(view) quaternion to equal the boxBodys(physics) for 3D rotation calculation
-        environmentObject.mesh.quaternion.copy(environmentObject.body.quaternion);
-      });
-      round.enemiesRemaining = 0;
-      for (var k = 0; k < enemies.length; k++) {
-        if (!enemies[k].direction || count % 60 === 0) {
-          enemies[k].direction = Math.random();
-        }
-        enemies[k].move();
-        if (enemies[k].health <= 0 && !enemies[k].isDead) {
-          enemies[k].die();
-        }
-        if (enemies[k].health / enemies[k].maxHealth > 0.67) {
-          enemies[k].mesh.material = green;
-        } else if (enemies[k].health / enemies[k].maxHealth > 0.34) {
-          enemies[k].mesh.material = blue;
-        } else {
-          enemies[k].mesh.material = red;
-        }
-        enemies[k].mesh.position.copy(enemies[k].body.position);
-        if (!enemies[k].isDead) {
-          round.enemiesRemaining++;
-        }
-      }
-      hud.enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
-      if (!round.enemiesRemaining && !round.isOver) {
-        round.end();
-      }
-      if (round.willStart && player.body.position.z < 15) {
-        round.start();
-      }
-      if (round.loss) {
-        round.lose();
-      }
-      if (count === 240) {
-        count = 0;
+      projectiles[i].duration--;
+      //If projectile duration is up remove it
+      if (projectiles[i].duration === 0) {
+        projectiles[i].remove();
+        i--;
       }
     }
-    //Update controls with time for delta
-    controls.update(Date.now() - time);
-    //Render the updated scene
-    renderer.render(scene, camera);
-    //Set new time for delta
-    time = Date.now();
+    // Update box positions
+    environmentObjects.forEach(function(environmentObject) {
+      //Update boxMeshes(view) position to equal the boxBodys(physics)
+      environmentObject.mesh.position.copy(environmentObject.body.position);
+      //Update boxMeshes(view) quaternion to equal the boxBodys(physics) for 3D rotation calculation
+      environmentObject.mesh.quaternion.copy(environmentObject.body.quaternion);
+    });
+    round.enemiesRemaining = 0;
+    for (var k = 0; k < enemies.length; k++) {
+      if (!enemies[k].direction || count % 60 === 0) {
+        enemies[k].direction = Math.random();
+      }
+      enemies[k].move();
+      if (enemies[k].health <= 0 && !enemies[k].isDead) {
+        enemies[k].die();
+      }
+      if (enemies[k].health / enemies[k].maxHealth > 0.67) {
+        enemies[k].mesh.material = green;
+      } else if (enemies[k].health / enemies[k].maxHealth > 0.34) {
+        enemies[k].mesh.material = blue;
+      } else {
+        enemies[k].mesh.material = red;
+      }
+      enemies[k].mesh.position.copy(enemies[k].body.position);
+      if (!enemies[k].isDead) {
+        round.enemiesRemaining++;
+      }
+    }
+    hud.enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
+    if (!round.enemiesRemaining && !round.isOver) {
+      round.end();
+    }
+    if (round.willStart && player.body.position.z < 15) {
+      round.start();
+    }
+    if (round.loss) {
+      round.lose();
+    }
+    if (count === 240) {
+      count = 0;
+    }
   }
+  //Update controls with time for delta
+  controls.update(Date.now() - time);
+  //Render the updated scene
+  renderer.render(scene, camera);
+  //Set new time for delta
+  time = Date.now();
+  // }
 }
 
 var ballShape = new CANNON.Sphere(0.2); //Set up a Cannon sphere as the shape, takes in radius
@@ -377,7 +387,7 @@ function getShootDir(targetVec) {
   targetVec.copy(ray.direction);
 }
 
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function() {
   if (controls.enabled === true) {
     //Set up x, y, and z at the player's current position
     var x = player.body.position.x;

@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require('gulp');
 var htmlMin = require('gulp-htmlmin');
 var cssMin = require('gulp-cssmin');
@@ -30,8 +32,8 @@ gulp.task('build:js', function() {
   return gulp.src('src/js/*.js')
     .pipe(watch('src/js/*.js'))
     .pipe(babel({
-			presets: ['es2015']
-		}))
+      presets: ['es2015']
+    }))
     .pipe(uglify())
     .pipe(gulp.dest('dist/js'));
 });
@@ -39,10 +41,12 @@ gulp.task('build:images', function() {
   return gulp.src('src/**/*.png')
     .pipe(watch('src/**/*.png'))
     .pipe(imagemin({
-			progressive: true,
-			svgoPlugins: [{removeViewBox: false}],
-			use: [pngquant()]
-		}))
+      progressive: true,
+      svgoPlugins: [{
+        removeViewBox: false
+      }],
+      use: [pngquant()]
+    }))
     .pipe(gulp.dest('dist'));
 });
 gulp.task('build:lib', function() {

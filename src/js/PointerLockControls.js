@@ -1,3 +1,5 @@
+'use strict';
+
 var PointerLockControls = function(camera, cannonBody) {
   var velocityFactor = 0.2;
   var jumpVelocity = 20;
@@ -51,10 +53,11 @@ var PointerLockControls = function(camera, cannonBody) {
     var contact = event.contact;
     // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
     // We do not yet know which one is which! Let's check.
-    if (contact.bi.id == cannonBody.id) // bi is the player body, flip the contact normal
+    if (contact.bi.id === cannonBody.id) {// bi is the player body, flip the contact normal
       contact.ni.negate(contactNormal);
-    else
-      contactNormal.copy(contact.ni); // bi is something else. Keep the normal as it is
+    } else {
+      contactNormal.copy(contact.ni);
+    } // bi is something else. Keep the normal as it is
 
     // If contactNormal.dot(upAxis) is between 0 and 1, we know that the contact normal is somewhat in the up direction.
     if (contactNormal.dot(upAxis) > 0.5) {// Use a "good" threshold value between 0 and 1 here!
@@ -68,7 +71,9 @@ var PointerLockControls = function(camera, cannonBody) {
 
   var onMouseMove = function(event) {
 
-    if (scope.enabled === false) return;
+    if (scope.enabled === false) {
+      return;
+    }
 
     var movementX = event.movementX || event.mozMovementX || 0;
     var movementY = event.movementY || event.mozMovementY || 0;
@@ -105,14 +110,6 @@ var PointerLockControls = function(camera, cannonBody) {
           velocity.y = jumpVelocity;
         }
         canJump = false;
-        break;
-      case 80: // p
-        if (!pause) {
-          pause = true;
-        } else {
-          pause = false;
-          time = Date.now(); //reseting the time so players cannot zoom across the world after unpausing
-        }
         break;
     }
   };
@@ -153,7 +150,9 @@ var PointerLockControls = function(camera, cannonBody) {
   var inputVelocity = new THREE.Vector3();
   var euler = new THREE.Euler();
   this.update = function(delta) {
-    if (scope.enabled === false) return;
+    if (scope.enabled === false) {
+      return;
+    }
     delta *= 0.1;
     inputVelocity.set(0, 0, 0);
     if (moveForward) {
