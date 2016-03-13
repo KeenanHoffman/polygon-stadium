@@ -20,14 +20,33 @@ body {
   bottom: 0;
   z-index: 1;
 }
-.progress {
-  border: solid #2B3856 3px;
-  width: 30%;
-  height: 4%;
+#upper-left {
+  position: absolute;
+  left: 2.1%;
+  top: -1.5%;
+  z-index: 2;
+  text-align: center;
+}
+#upper-right {
+  position: absolute;
+  right: 7%;
+  top: -1.5%;
+  z-index: 2;
+  text-align: center;
+}
+#bottom-middle {
   position: absolute;
   left: 32%;
-  bottom: -2%;
+  bottom: .5%;
   z-index: 2;
+  width: 40%;
+  height: 4%;
+}
+#health-bar {
+  float:left;
+  width: 75%;
+  height: 100%;
+  border: solid #2B3856 3px;
   background: rgba(150, 150, 150, 0.2);
 }
 #health {
@@ -35,27 +54,12 @@ body {
   background: linear-gradient(to top, #2196F3, #1565C0);
 }
 #life-counter {
-  position: absolute;
-  left: 62.3%;
-  bottom: -1%;
-  z-index: 2;
-  display: block;
-  text-align: right;
+  margin-top: -0.5%;
+  margin-left: 1%;
+  float: left;
 }
-#round {
-  position: absolute;
-  left: 6%;
-  top: -1%;
-  z-index: 2;
-  display: block;
-}
-#enemies-remaining {
-  position: absolute;
-  left: 2.1%;
-  top: 4.5%;
-  z-index: 2;
-  display: block;
-}
+#round {}
+#enemies-remaining {}
 #instructions {
   position: absolute;
   width: 100%;
@@ -69,21 +73,8 @@ body {
   text-align: center;
   cursor: pointer;
 }
-#player-name {
-  position: absolute;
-  right: 7%;
-  top: -1%;
-  z-index: 2;
-  display: block;
-  text-align: right;
-}
-#score {
-  position: absolute;
-  right: 8.5%;
-  top: 4.5%;
-  z-index: 2;
-  display: block;
-}
+#player-name {}
+#score {}
 #next-round {
   position: absolute;
   left: 30%;
@@ -91,4 +82,19 @@ body {
   z-index: 2;
   display: block;
   color: white;
+}
+.health-bar-red {
+  background: linear-gradient(to top, #F44336, #C62828) !important;
+}
+.health-bar-orange {
+  background: linear-gradient(to top, #FF9800, #EF6C00) !important;
+}
+.health-bar-yellow {
+  background: linear-gradient(to top, #FFEB3B, #F9A825) !important;
+}
+.health-bar-green {
+  background: linear-gradient(to top, #4CAF50, #2E7D32) !important;
+}
+.health-bar-blue {
+  background: linear-gradient(to top, #2196F3, #1565C0) !important;
 }

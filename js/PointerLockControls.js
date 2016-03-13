@@ -1,7 +1,3 @@
-/**
- * @author mrdoob / http://mrdoob.com/
- * @author schteppe / https://github.com/schteppe
- */
 var PointerLockControls = function(camera, cannonBody) {
   var velocityFactor = 0.2;
   var jumpVelocity = 20;
@@ -26,31 +22,32 @@ var PointerLockControls = function(camera, cannonBody) {
     //Check if an enemy collided with the player
     var healthPercentage = Math.round(player.health / player.maxHealth * 100);
     if (event.body.cubeEnemyId) {
-      player.health -= enemies[event.body.cubeEnemyId].damage;
+      player.takeDamage(enemies[event.body.cubeEnemyId]);
       if (healthPercentage <= 0) {
         player.die();
-        // enemies.forEach(function(enemy) {
-        //   world.remove(enemy.body);
-        //   scene.remove(enemy.mesh);
-        // });
-        // enemies = [];
+        hud.lifeCounter.innerHTML = '100%';
       } else {
-        healthBar.style.width = healthPercentage + '%';
-      }
-      document.querySelector('#life-counter').innerHTML = healthPercentage + '%';
-      if (healthPercentage < 21) {
-        healthBar.style.background = 'linear-gradient(to top, #F44336, #C62828)';
-      } else if (healthPercentage < 41) {
-        healthBar.style.background = 'linear-gradient(to top, #FF9800, #EF6C00)';
-      } else if (healthPercentage < 61) {
-        healthBar.style.background = 'linear-gradient(to top, #FFEB3B, #F9A825)';
-      } else if (healthPercentage < 81) {
-        healthBar.style.background = 'linear-gradient(to top, #4CAF50, #2E7D32)';
-      } else {
-        healthBar.style.background = 'linear-gradient(to top, #2196F3, #1565C0)';
+        hud.healthBar.style.width = healthPercentage + '%';
+        hud.lifeCounter.innerHTML = healthPercentage + '%';
+        switch (true) {
+          case (healthPercentage < 21):
+            hud.healthBar.className = 'progress-bar health-bar-red';
+            break;
+          case (healthPercentage < 41):
+            hud.healthBar.className = 'progress-bar health-bar-orange';
+            break;
+          case (healthPercentage < 61):
+            hud.healthBar.className = 'progress-bar health-bar-yellow';
+            break;
+          case (healthPercentage < 81):
+            hud.healthBar.className = 'progress-bar health-bar-green';
+            break;
+          case (healthPercentage < 100):
+            hud.healthBar.className = 'progress-bar health-bar-blue';
+            break;
+        }
       }
     }
-
     var contact = event.contact;
     // contact.bi and contact.bj are the colliding bodies, and contact.ni is the collision normal.
     // We do not yet know which one is which! Let's check.

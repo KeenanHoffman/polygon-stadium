@@ -1,9 +1,5 @@
 var element = document.body;
 var instructions = document.getElementById('instructions');
-var healthBar = document.querySelector('#health');
-var enemiesRemaining;
-var currentRound;
-var playerScore;
 //Sets up pointer lock
 var pointerlockchange = function(event) {
   controls.enabled = true;
@@ -14,7 +10,14 @@ instructions.addEventListener('click', function(event) {
   instructions.style.display = 'none';
   element.requestPointerLock();
 });
-
+var hud = {
+  healthBar: document.querySelector('#health'),
+  playerName: document.querySelector('#player-name'),
+  playerScore: document.querySelector('#score'),
+  currentRound: document.querySelector('#round'),
+  enemiesRemaining: document.querySelector('#enemies-remaining'),
+  lifeCounter: document.querySelector('#life-counter')
+};
 var red = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
   color: 0xff0000,
   opacity: 0.6,
@@ -45,12 +48,17 @@ var player = {
   health: 10,
   damage: 1,
   score: 0,
+  takeDamage: function(enemy) {
+    this.health -= enemy.damage;
+  },
   die: function() {
-    healthBar.style.width = '100%';
+    hud.lifeCounter.innerHTML = '100%';
+    hud.healthBar.className = 'progress-bar health-bar-blue';
+    hud.healthBar.style.width = '100%';
     player.health = 10;
     player.maxHealth = 10;
     player.score = 0;
-    playerScore.innerHTML = player.score;
+    hud.playerScore.innerHTML = player.score;
     round.loss = true;
   }
 };
@@ -76,7 +84,7 @@ var round = {
     makeEnemies();
     round.number++;
     round.multiplier += 0.1;
-    currentRound.innerHTML = 'Round ' + round.number;
+    hud.currentRound.innerHTML = 'Round ' + round.number;
 
     context1.clearRect(0, 0, canvas1.width, canvas1.height);
     context1.fillText('Round ' + round.number, 70, 50);
@@ -213,30 +221,8 @@ function initThree() {
 
   controls = new PointerLockControls(camera, player.body);
   scene.add(controls.getObject());
-  var lifeCounter = document.createElement('h1');
-  lifeCounter.innerHTML = (player.health / player.maxHealth * 100) + '%';
-  lifeCounter.id = 'life-counter';
-  element.appendChild(lifeCounter);
 
-  enemiesRemaining = document.createElement('h3');
-  enemiesRemaining.innerHTML = 'Enemies Remaining';
-  enemiesRemaining.id = 'enemies-remaining';
-  element.appendChild(enemiesRemaining);
-
-  currentRound = document.createElement('h1');
-  currentRound.innerHTML = 'Round ' + round.number;
-  currentRound.id = 'round';
-  element.appendChild(currentRound);
-
-  playerName = document.createElement('h1');
-  playerName.innerHTML = 'KOFF01';
-  playerName.id = 'player-name';
-  element.appendChild(playerName);
-
-  playerScore = document.createElement('h3');
-  playerScore.innerHTML = player.score;
-  playerScore.id = 'score';
-  element.appendChild(playerScore);
+  hud.playerName.innerHTML = 'KOFF01';
 
   startNextRound = document.createElement('h1');
   startNextRound.innerHTML = '';
@@ -253,7 +239,7 @@ function initThree() {
   context1.fillText('Round ' + round.number, 70, 50);
 
   // canvas contents will be used for a texture
-  var texture1 = new THREE.Texture(canvas1)
+  var texture1 = new THREE.Texture(canvas1);
   texture1.needsUpdate = true;
 
   var material1 = new THREE.MeshBasicMaterial({
@@ -347,7 +333,7 @@ function animate() {
           round.enemiesRemaining++;
         }
       }
-      enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
+      hud.enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
       if (!round.enemiesRemaining && !round.isOver) {
         round.end();
       }
@@ -355,7 +341,7 @@ function animate() {
         round.start();
       }
       if (round.loss) {
-        round.lose()
+        round.lose();
       }
       if (count === 240) {
         count = 0;
@@ -672,7 +658,7 @@ function makeEnemies() {
       takeDamage: function() {
         this.health -= player.damage;
         player.score += Math.round(100 * round.multiplier);
-        playerScore.innerHTML = player.score;
+        hud.playerScore.innerHTML = player.score;
       },
       die: function() {
         this.isDead = true;
