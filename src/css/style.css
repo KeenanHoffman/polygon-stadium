@@ -11,7 +11,7 @@ body {
 }
 .hud {
   pointer-events: none;
-  background: url('../hud.png') center center no-repeat;
+  background: url('../images/hud.png') center center no-repeat;
   background-size: cover;
   position: absolute;
   right: 0;

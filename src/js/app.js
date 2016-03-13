@@ -1,5 +1,9 @@
 var element = document.body;
 var instructions = document.getElementById('instructions');
+var startNextRound;
+var context1;
+var canvas1;
+var mesh1;
 //Sets up pointer lock
 var pointerlockchange = function(event) {
   controls.enabled = true;
@@ -91,6 +95,7 @@ var round = {
     var texture1 = new THREE.Texture(canvas1);
     texture1.needsUpdate = true;
     mesh1.material.map = texture1;
+    mesh1.material.map.minFilter = THREE.LinearFilter;
 
     gate.toggle();
     round.willStart = false;
@@ -192,7 +197,7 @@ function initThree() {
   var ambient = new THREE.AmbientLight(0x111111);
   scene.add(ambient);
 
-  light = new THREE.SpotLight(0xffffff);
+  var light = new THREE.SpotLight(0xffffff);
   light.position.set(0, 20, 0);
   light.target.position.set(0, 0, 0);
   scene.add(light);
@@ -246,6 +251,7 @@ function initThree() {
     map: texture1,
     side: THREE.DoubleSide
   });
+  material1.map.minFilter = THREE.LinearFilter;
   material1.transparent = true;
 
   mesh1 = new THREE.Mesh(
