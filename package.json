@@ -26,6 +26,8 @@
     "gulp-uglify": "^1.5.3",
     "gulp-watch": "^4.3.5",
     "imagemin-pngquant": "^4.2.2",
-    "run-sequence": "^1.1.5"
+    "run-sequence": "^1.1.5",
+    "body-parser": "~1.13.2",
+    "express": "~4.13.1"
   }
 }
