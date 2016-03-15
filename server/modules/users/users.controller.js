@@ -53,12 +53,12 @@ function saveGame(req, res, next) {
   }, function(err, savedGame) {
     if (err) next(err);
     console.log(savedGame);
-    req.models.user.findOne(req.params).exec(function(err, user) {
+    req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
       if (err) next(err);
       user.savedGames.add(savedGame.id);
       user.save(function(err) {
-        if(err) next(err);
-        res.json({status:'success'}, 200);
+        if(err) console.log(err);
+        res.status(200).json({status:'success'});
       });
     });
   });
