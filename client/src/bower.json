@@ -1,0 +1,22 @@
+{
+  "name": "gulp-my-angular",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "KeenanHoffman <keenan.m.hoffman@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "^1.5.0",
+    "bootstrap-material-design": "^0.5.7"
+  }
+}

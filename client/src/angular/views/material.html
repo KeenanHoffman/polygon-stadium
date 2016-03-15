@@ -1,0 +1,200 @@
+<!-- Example Navbar -->
+<div class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="javascript:void(0)">Brand</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="javascript:void(0)">Active</a></li>
+        <li><a href="javascript:void(0)">Link</a></li>
+        <li class="dropdown">
+          <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+          <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)">Action</a></li>
+            <li><a href="javascript:void(0)">Another action</a></li>
+            <li><a href="javascript:void(0)">Something else here</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Dropdown header</li>
+            <li><a href="javascript:void(0)">Separated link</a></li>
+            <li><a href="javascript:void(0)">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control col-md-8" placeholder="Search">
+        </div>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="javascript:void(0)">Link</a></li>
+        <li class="dropdown">
+          <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown
+          <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:void(0)">Action</a></li>
+            <li><a href="javascript:void(0)">Another action</a></li>
+            <li><a href="javascript:void(0)">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:void(0)">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<button class="btn btn-default" data-ripple-color="#00FF00">Custom ripple</button>
+<!-- Example Inputs -->
+<div class="form-group label-static">
+  <label for="i2" class="control-label">label-static</label>
+  <input type="email" class="form-control" id="i2" placeholder="placeholder attribute">
+  <p class="help-block">This is a hint as a
+    <code>p.help-block.hint</code>
+  </p>
+</div>
+<div class="form-group label-floating">
+  <label for="i5" class="control-label">label-floating</label>
+  <input type="email" class="form-control" id="i5">
+  <span class="help-block">This is a hint as a
+    <code>span.help-block.hint</code>
+  </span>
+</div>
+<div class="form-group label-placeholder">
+  <label for="i5p" class="control-label">label-placeholder</label>
+  <input type="email" class="form-control" id="i5p">
+  <span class="help-block">This is a hint as a
+    <code>span.help-block.hint</code>
+  </span>
+</div>
+<!-- Example Form -->
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Legend</legend>
+    <div class="form-group">
+      <label for="inputEmail" class="col-md-2 control-label">Email</label>
+      <div class="col-md-10">
+        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="col-md-2 control-label">Password</label>
+      <div class="col-md-10">
+        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+      </div>
+    </div>
+    <div class="form-group" style="margin-top: 0;">
+      <!-- inline style is just to demo custom css to put checkbox below input above -->
+      <div class="col-md-offset-2 col-md-10">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox"> Checkbox
+          </label>
+          <label>
+            <input type="checkbox" disabled=""> Disabled Checkbox
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <div class="togglebutton">
+          <label>
+            <input type="checkbox" checked=""> Toggle button
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputFile" class="col-md-2 control-label">File</label>
+
+      <div class="col-md-10">
+        <input type="text" readonly="" class="form-control" placeholder="Browse...">
+        <input type="file" id="inputFile" multiple="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="textArea" class="col-md-2 control-label">Textarea</label>
+
+      <div class="col-md-10">
+        <textarea class="form-control" rows="3" id="textArea"></textarea>
+        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 control-label">Radios</label>
+
+      <div class="col-md-10">
+        <div class="radio radio-primary">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked=""> Option one is this
+          </label>
+        </div>
+        <div class="radio radio-primary">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Option two can be something else
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="select111" class="col-md-2 control-label">Select</label>
+      <div class="col-md-10">
+        <select id="select111" class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="select222" class="col-md-2 control-label">Select Multiple</label>
+      <div class="col-md-10">
+        <select id="select222" multiple="" class="form-control">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-10 col-md-offset-2">
+        <button type="button" class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<!-- Example Icon -->
+<i class="material-icons">face</i>
+<!-- Example Card -->
+<div class="row">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-height-indicator"></div>
+      <div class="card-content">
+        <div class="card-image">
+          <img src="http://www.blirk.net/wallpapers/1680x1050/night-city-wallpaper-15.jpg" alt="Loading image...">
+          <h3 class="card-image-headline">Lorem Ipsum Dolor</h3>
+        </div>
+        <div class="card-body">
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+        </div>
+        <footer class="card-footer">
+          <button class="btn btn-flat">Share</button>
+          <button class="btn btn-flat btn-warning">Learn More</button>
+        </footer>
+      </div>
+    </div>
+    <div class="col-lg-3"></div>
+  </div>

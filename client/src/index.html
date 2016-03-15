@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='polygonStadiumApp'>
 
 <head>
   <meta charset="UTF-8">
-  <title>Threejs FPS</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/style.css">
+  <title>Document</title>
+  <!-- Material Design fonts -->
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Jquery -->
+  <script src="lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
+  <!-- Bootstrap -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <script src="lib/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+  <!-- Bootstrap Material Design -->
+  <link href="lib/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet">
+  <link href="lib/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+  <link href="lib/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+  <script src="lib/bootstrap-material-design/dist/js/material.min.js" charset="utf-8"></script>
+  <script src="lib/bootstrap-material-design/dist/js/ripples.min.js" charset="utf-8"></script>
+  <!-- Angular -->
+  <script src="lib/angular/angular.min.js" charset="utf-8"></script>
+  <script src="lib/angular-route/angular-route.min.js" charset="utf-8"></script>
+  <script src="js/app.js" charset="utf-8"></script>
+  <script src="js/controllers.js" charset="utf-8"></script>
+  <script src="js/filters.js" charset="utf-8"></script>
+  <script src="js/routes.js" charset="utf-8"></script>
+  <script src="js/services.js" charset="utf-8"></script>
+  <script src="js/directives.js" charset="utf-8"></script>
+  <script src="js/factories.js" charset="utf-8"></script>
+  <!-- Style -->
+  <link rel="stylesheet" href="css/style.min.css">
 </head>
 
 <body>
-  <div id="instructions">
-    <h3>Click to play</h3>
-    <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
-  </div>
-  <div class="hud">
-    <div id="upper-left">
-      <h1 id="round">Round 0</h1>
-      <h3 id="enemies-remaining">Enemies Remaining</h3>
-    </div>
-    <div id="upper-right">
-      <h1 id="player-name"></h1>
-      <h3 id="score">0</h3>
-    </div>
-    <div id="bottom-middle">
-      <div id="health-bar" class="progress">
-        <div id="health" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-          <span class="sr-only"></span>
-        </div>
-      </div>
-      <h1 id="life-counter">100%</h1>
-    </div>
-  </div>
-  <script src="lib/three.min.js"></script>
-  <script src="lib/cannon.min.js"></script>
-  <script src="js/PointerLockControls.js"></script>
-  <script src="js/app.js"></script>
+  <div ng-view></div>
 </body>
-
+  <script src="../lib/three.min.js"></script>
+  <script src="../lib/cannon.min.js"></script>
 </html>

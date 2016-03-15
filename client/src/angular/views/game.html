@@ -1,0 +1,24 @@
+  <link rel="stylesheet" href="/css/game.css">
+  <div id="instructions">
+    <h3>Click to play</h3>
+    <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
+  </div>
+  <div class="hud">
+    <div id="upper-left">
+      <h1 id="round">Round 0</h1>
+      <h3 id="enemies-remaining">Enemies Remaining</h3>
+    </div>
+    <div id="upper-right">
+      <h1 id="player-name"></h1>
+      <h3 id="score">0</h3>
+    </div>
+    <div id="bottom-middle">
+      <div id="health-bar" class="progress">
+        <div id="health" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+      <h1 id="life-counter">100%</h1>
+    </div>
+  </div>
+  <begin-game></begin-game>
