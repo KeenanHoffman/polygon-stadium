@@ -9,16 +9,28 @@ body {
   overflow: hidden;
   font-family: arial;
 }
-.hud {
+@media (max-height: 754px) {
+  h1 {
+    font-size: 3rem;
+    margin: .75rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+}
+#hud {
   pointer-events: none;
-  background: url('../images/hud.png') center center no-repeat;
-  background-size: cover;
-  position: absolute;
-  right: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
   left: 0;
   top: 0;
-  bottom: 0;
   z-index: 1;
+}
+.stretch {
+  width: 100%;
+  height: 100%;
 }
 #upper-left {
   position: absolute;
@@ -43,7 +55,7 @@ body {
   height: 4%;
 }
 #health-bar {
-  float:left;
+  float: left;
   width: 75%;
   height: 100%;
   border: solid #2B3856 3px;

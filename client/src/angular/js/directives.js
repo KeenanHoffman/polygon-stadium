@@ -108,7 +108,7 @@ function beginGame($scope, $elem, $attr) {
       gate.toggle();
       startNextRound.innerHTML = 'press ENTER to begin the next round';
       if (shouldSave) {
-        console.log(saveState.round);
+        console.log({ saveId: gameId, save: JSON.stringify(saveState)});
         //use setTimeout to allow scoring to finish
         setTimeout(function() {
           $.post('http://localhost:3000/users/1/save-game', { saveId: gameId, save: JSON.stringify(saveState)})
@@ -116,7 +116,6 @@ function beginGame($scope, $elem, $attr) {
             if(data.newGameId) {
               gameId = data.newGameId;
             }
-            console.log(data);
           });//add a popup letting the user know the game has been saved.
         }, 0);
       }
@@ -496,6 +495,8 @@ function beginGame($scope, $elem, $attr) {
     window.addEventListener('resize', onWindowResize, false);
 
     function onWindowResize() {
+      document.querySelector('#hud').style.width = $(window).width()+'px';
+      document.querySelector('.stretch').style.width = $(window).width()+'px';
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
