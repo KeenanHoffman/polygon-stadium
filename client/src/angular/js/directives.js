@@ -4,13 +4,15 @@ angular.module('polygonStadiumApp')
   .directive('beginGame', function() {
     return {
       scope: {
-        save: '='
+        save: '=',
+        saveId: '@'
       },
       link: beginGame
     };
   });
 
 function beginGame($scope, $elem, $attr) {
+  var gameId = $scope.save.id;
   var element = document.body;
   var instructions = document.getElementById('instructions');
   var startNextRound;
@@ -88,6 +90,7 @@ function beginGame($scope, $elem, $attr) {
       round.loss = true;
     }
   };
+  var shouldSave = false;
   var round = {
     number: 0,
     multiplier: 1,
@@ -97,9 +100,27 @@ function beginGame($scope, $elem, $attr) {
     loss: false,
     end: function() {
       enemies = [];
+      player.health = player.maxHealth;
+      hud.lifeCounter.innerHTML = '100%';
+      hud.healthBar.className = 'progress-bar health-bar-blue';
+      hud.healthBar.style.width = '100%';
       round.isOver = true;
       gate.toggle();
       startNextRound.innerHTML = 'press ENTER to begin the next round';
+      if (shouldSave) {
+        console.log(saveState.round);
+        //use setTimeout to allow scoring to finish
+        setTimeout(function() {
+          $.post('http://localhost:3000/users/1/save-game', { saveId: gameId, save: JSON.stringify(saveState)})
+          .done(function(data) {
+            if(data.newGameId) {
+              gameId = data.newGameId;
+            }
+            console.log(data);
+          });//add a popup letting the user know the game has been saved.
+        }, 0);
+      }
+      shouldSave = true;
       window.addEventListener('keydown', function(e) {
         if (controls.enabled) {
           if (e.keyCode === 13 && !round.enemiesRemaining && player.body.position.z < 15) {
@@ -132,7 +153,12 @@ function beginGame($scope, $elem, $attr) {
         scene.remove(enemy.mesh);
       });
       enemies = [];
-      round.number = 0;
+      if(round.number % 5 === 0) {
+        round.number -= 5;
+      } else {
+        for (round.number; round.number % 5 !== 0; round.number--);
+
+      }
       round.multiplier = 0.9;
       round.enemiesRemaining = 0;
       round.loss = false;
@@ -158,9 +184,10 @@ function beginGame($scope, $elem, $attr) {
     }
   };
   if ($scope.save !== 'new') {
-    console.log($scope.save);
-    round.number += $scope.save.saved_game.round;
+    round.number += Number($scope.save.saved_game.round);
     round.multiplier += $scope.save.saved_game.round / 10;
+    player.score = Number($scope.save.saved_game.score);
+    hud.playerScore.innerHTML = player.score;
   }
   var saveState;
   var playerShape;

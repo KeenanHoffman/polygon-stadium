@@ -37,18 +37,38 @@ function remove(req, res, next) {
   });
 }
 function saveGame(req, res, next) {
-  req.models.saved_game.create({
+  // console.log(JSON.parse(req.body.save));
+  req.models.saved_game.findOrCreate({
+    id: req.body.saveId
+  }, {
     user_id: req.params.id,
-    saved_game: req.body.gameState
+    saved_game: JSON.parse(req.body.save)
   }, function(err, savedGame) {
     if (err) next(err);
     req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
       if (err) next(err);
-      user.savedGames.add(savedGame.id);
-      user.save(function(err) {
-        if(err) next(err);
-        res.status(200).json({status:'success'});
+      var isNewGameSave = true;
+      user.savedGames.forEach(function(element) {
+        // console.log(savedGame.id, user.savedGames);
+        if(savedGame.id === element.id) {
+          isNewGameSave = false;
+        }
       });
+      if(isNewGameSave) {
+        user.savedGames.add(savedGame.id);
+        user.save(function(err) {
+          if(err) next(err);
+          res.status(200).json({status:'new game saved', newGameId: savedGame.id});
+        });
+      } else {
+        req.models.saved_game.update({
+          id: req.body.saveId
+        }, {
+          saved_game: JSON.parse(req.body.save)
+        }, function() {
+          res.status(200).json({status:'game saved'});
+        });
+      }
     });
   });
 }

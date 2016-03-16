@@ -24,15 +24,17 @@ function gameController($scope, $http) {
       url: 'http://localhost:3000/users/1/saves',
       method: 'GET'
     })
-    .success(function(data, status, headers, config) {
+    .success(function(data/*, status, headers, config*/) {
       vm.saves = data;
     });
-    vm.chooseSave = function(save) {
+    vm.chooseSave = function(save, index) {
       if (save === 'new') {
         $scope.save = 'new';
+        vm.saveId = index;
         vm.saves = [];
       } else {
         $scope.save = save;
+        vm.saveId = vm.saves.length + 1;
         vm.saves = [];
       }
       vm.saveChosen = true;
