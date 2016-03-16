@@ -4,7 +4,7 @@ angular.module('polygonStadiumApp').config(function($routeProvider, $locationPro
   $routeProvider
     .when('/', {
       templateUrl: '../views/home.html',
-      controller: 'TemplateController as TC',
+      controller: 'LoginController as LC',
       activetab: 'home'
     })
     .when('/material', {

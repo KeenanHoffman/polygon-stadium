@@ -1,1 +1,6 @@
 <h1>Home</h1>
+<form ng-submit="LC.submit()">
+  <input ng-model="LC.user.username" type="text" name="user" placeholder="Username" />
+  <input ng-model="LC.user.password" type="password" name="pass" placeholder="Password" />
+  <input type="submit" value="Login" />
+</form>

@@ -108,15 +108,24 @@ function beginGame($scope, $elem, $attr) {
       gate.toggle();
       startNextRound.innerHTML = 'press ENTER to begin the next round';
       if (shouldSave) {
-        console.log({ saveId: gameId, save: JSON.stringify(saveState)});
         //use setTimeout to allow scoring to finish
         setTimeout(function() {
-          $.post('http://localhost:3000/users/1/save-game', { saveId: gameId, save: JSON.stringify(saveState)})
-          .done(function(data) {
-            if(data.newGameId) {
-              gameId = data.newGameId;
-            }
-          });//add a popup letting the user know the game has been saved.
+          $.ajax({
+              type: "POST",
+              url: 'http://localhost:3000/users/1/save-game',
+              data: {
+                saveId: gameId,
+                save: JSON.stringify(saveState)
+              },
+              headers: {
+                Authorization: 'Bearer ' + window.sessionStorage.token
+              }
+            })
+            .done(function(data) { //add a popup letting the user know the game has been saved.
+              if (data.newGameId) {
+                gameId = data.newGameId;
+              }
+            });
         }, 0);
       }
       shouldSave = true;
@@ -152,7 +161,7 @@ function beginGame($scope, $elem, $attr) {
         scene.remove(enemy.mesh);
       });
       enemies = [];
-      if(round.number % 5 === 0) {
+      if (round.number % 5 === 0) {
         round.number -= 5;
       } else {
         for (round.number; round.number % 5 !== 0; round.number--);
@@ -495,8 +504,8 @@ function beginGame($scope, $elem, $attr) {
     window.addEventListener('resize', onWindowResize, false);
 
     function onWindowResize() {
-      document.querySelector('#hud').style.width = $(window).width()+'px';
-      document.querySelector('.stretch').style.width = $(window).width()+'px';
+      document.querySelector('#hud').style.width = $(window).width() + 'px';
+      document.querySelector('.stretch').style.width = $(window).width() + 'px';
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);

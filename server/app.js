@@ -4,18 +4,24 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const expressJwt = require('express-jwt');
 
 const routes = require('./routes');
 
 const app = express();
 
+app.use(cors());
 app.use(function(req, res, next) {
   req.models = app.models;
   next();
 });
-app.use(cors());
+app.use('/users', expressJwt({
+  secret: 'secret'
+}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
