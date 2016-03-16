@@ -3,16 +3,17 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const routes = require('./routes');
 
 const app = express();
 
 app.use(function(req, res, next) {
-  req.models = app.models;  
+  req.models = app.models;
   next();
 });
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));

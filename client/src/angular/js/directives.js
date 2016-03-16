@@ -3,11 +3,14 @@
 angular.module('polygonStadiumApp')
   .directive('beginGame', function() {
     return {
+      scope: {
+        save: '='
+      },
       link: beginGame
     };
   });
 
-function beginGame() {
+function beginGame($scope, $elem, $attr) {
   var element = document.body;
   var instructions = document.getElementById('instructions');
   var startNextRound;
@@ -66,6 +69,11 @@ function beginGame() {
     health: 10,
     damage: 1,
     score: 0,
+    level: 1, //not yet used
+    skillPoints: [], //not yet used
+    exp: 0, //not yet used
+    money: 0, //not yet used
+    items: [], //not yet used
     takeDamage: function(enemy) {
       this.health -= enemy.damage;
     },
@@ -82,7 +90,7 @@ function beginGame() {
   };
   var round = {
     number: 0,
-    multiplier: 0.9,
+    multiplier: 1,
     enemiesRemaining: 0,
     willStart: true,
     isOver: false,
@@ -149,6 +157,12 @@ function beginGame() {
       }
     }
   };
+  if ($scope.save !== 'new') {
+    console.log($scope.save);
+    round.number += $scope.save.saved_game.round;
+    round.multiplier += $scope.save.saved_game.round / 10;
+  }
+  var saveState;
   var playerShape;
   var count = 0;
   var controls;
@@ -405,7 +419,7 @@ function beginGame() {
     startNextRound = document.createElement('h1');
     startNextRound.innerHTML = '';
     startNextRound.id = 'next-round';
-    element.appendChild(startNextRound);
+    document.querySelector('#game').appendChild(startNextRound);
 
     ///////////////////////////////////////////////////////
     //Begin Text Example
@@ -449,7 +463,7 @@ function beginGame() {
     //renderer
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    element.appendChild(renderer.domElement);
+    document.querySelector('#game').appendChild(renderer.domElement);
 
     //Window resize handler
     window.addEventListener('resize', onWindowResize, false);
@@ -466,7 +480,6 @@ function beginGame() {
 
   function animate() {
     requestAnimationFrame(animate);
-    // if (!pause) { //Check if game is paused, do not proggress animation if game is paused
     if (controls.enabled) {
       count++;
       world.step(dt); //Update world dt(1/60)th of a second
@@ -526,13 +539,21 @@ function beginGame() {
         count = 0;
       }
     }
+    saveState = {
+      level: player.level,
+      skillPoints: player.skillPoints,
+      items: player.items,
+      money: player.money,
+      exp: player.exp,
+      score: player.score,
+      round: round.number
+    };
     //Update controls with time for delta
     controls.update(Date.now() - time);
     //Render the updated scene
     renderer.render(scene, camera);
     //Set new time for delta
     time = Date.now();
-    // }
   }
 
   var ballShape = new CANNON.Sphere(0.2); //Set up a Cannon sphere as the shape, takes in radius

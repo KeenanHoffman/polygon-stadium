@@ -39,7 +39,7 @@ function remove(req, res, next) {
 function saveGame(req, res, next) {
   req.models.saved_game.create({
     user_id: req.params.id,
-    saved_game: JSON.stringify(req.body.gameState)
+    saved_game: req.body.gameState
   }, function(err, savedGame) {
     if (err) next(err);
     req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {

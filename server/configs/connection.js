@@ -14,6 +14,6 @@ module.exports = {
     }
   },
   defaults: {
-    migrate: 'safe'
+    migrate: 'alter'
   }
 };

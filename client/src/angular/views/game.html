@@ -1,4 +1,9 @@
-  <link rel="stylesheet" href="/css/game.css">
+<link rel="stylesheet" href="/css/game.css">
+<div ng-hide="GC.saveChosen" ng-repeat="save in GC.saves track by $index">
+  <pre ng-click="GC.chooseSave(save)">{{save}}</pre>
+</div>
+<h1 ng-hide="GC.saveChosen" ng-click="GC.chooseSave('new')">NEW GAME</h1>
+<div ng-if="GC.saveChosen">
   <div id="instructions">
     <h3>Click to play</h3>
     <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
@@ -21,4 +26,7 @@
       <h1 id="life-counter">100%</h1>
     </div>
   </div>
-  <begin-game></begin-game>
+  <div id="game"></div>
+  {{save}}
+  <begin-game save="save"></begin-game>
+</div>

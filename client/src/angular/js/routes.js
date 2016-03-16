@@ -14,7 +14,7 @@ angular.module('polygonStadiumApp').config(function($routeProvider, $locationPro
     })
     .when('/play', {
       templateUrl: '../views/game.html',
-      controller: 'TemplateController as TC',
+      controller: 'GameController as GC',
       activetab: 'play'
     })
     .otherwise({
