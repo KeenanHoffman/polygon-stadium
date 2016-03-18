@@ -18,13 +18,16 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
   };
   vm.goToLogin = function() {
     if(vm.user.id === 'none') {
-      $window.location.href = '#/login';
+      $window.location.href = '#/';
     }
+  };
+  vm.goHome = function() {
+      $window.location.href = '#/';
   };
   vm.logout = function() {
     delete $window.sessionStorage.token;
     vm.user = userService.getUser();
-    $window.location.href = '#/login';
+    $window.location.href = '#/';
   };
   vm.playNow = function() {
     $window.location.href = '#/play';

@@ -107,8 +107,9 @@ function beginGameLogic(userService) {
           hud.healthBar.style.width = '100%';
           round.isOver = true;
           gate.toggle();
-          startNextRound.innerHTML = 'press ENTER to begin the next round';
+          round.multiplier += round.number / 10;
           if (shouldSave) {
+            startNextRound.innerHTML = 'press ENTER to begin the next round';
             //use setTimeout to allow scoring to finish
             setTimeout(function() {
               var userId = _userService.getUser().id;
@@ -171,7 +172,7 @@ function beginGameLogic(userService) {
             for (round.number; round.number % 5 !== 0; round.number--);
 
           }
-          round.multiplier = 0.9;
+          round.multiplier = 1;
           round.enemiesRemaining = 0;
           round.loss = false;
         }
@@ -197,9 +198,9 @@ function beginGameLogic(userService) {
       };
       if ($scope.save !== 'new') {
         round.number += Number($scope.save.saved_game.round);
-        round.multiplier += $scope.save.saved_game.round / 10;
         player.score = Number($scope.save.saved_game.score);
         hud.playerScore.innerHTML = player.score;
+        hud.currentRound.innerHTML = 'Round ' + round.number;
       }
       var saveState;
       var playerShape;
@@ -395,7 +396,7 @@ function beginGameLogic(userService) {
 
         // Create a sphere to represent our player
         var mass = 5, //determines the objects mass, important if calculating momentum
-          radius = 1.3; //sphere radius
+          radius = 1.5;//1.3; //sphere radius
         playerShape = new CANNON.Sphere(radius);
         var playerBody = new CANNON.Body({
           mass: mass
@@ -454,7 +455,11 @@ function beginGameLogic(userService) {
         scene.add(controls.getObject());
         var username = _userService.getUser().username;
         // username = JSON.parse(username).username;
-        hud.playerName.innerHTML = username;
+        if (username.length >= 10) {
+          hud.playerName.innerHTML = '<h2>' + username + '</h2>';
+        } else {
+          hud.playerName.innerHTML = username;
+        }
 
         startNextRound = document.createElement('h1');
         startNextRound.innerHTML = '';
@@ -511,7 +516,6 @@ function beginGameLogic(userService) {
         function onWindowResize() {
           document.querySelector('#hud').style.width = $(window).width() + 'px';
           document.querySelector('.stretch-across').style.width = $(window).width() + 'px';
-          console.log('resize');
           camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
