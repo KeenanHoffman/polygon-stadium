@@ -7,9 +7,14 @@ angular.module('polygonStadiumApp').config(function($routeProvider, $locationPro
       controller: 'LoginController as LC',
       activetab: 'home'
     })
+    .when('/signup', {
+      templateUrl: '../views/signup.html',
+      controller: 'SignupController as SC',
+      activetab: 'material'
+    })
     .when('/material', {
       templateUrl: '../views/material.html',
-      controller: 'TemplateController as TC',
+      controller: 'LoginController as TC',
       activetab: 'material'
     })
     .when('/play', {

@@ -12,7 +12,7 @@ function login(req, res, next) {
     } else if(user.password === req.body.password) {
       delete user.password;
       var token = jwt.sign(user, 'secret', {
-        expiresInMinutes: 60 * 5
+        expiresIn: 60 * 60 * 5
       });
       res.json({
         token: token

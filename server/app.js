@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
 });
 app.use('/users', expressJwt({
   secret: 'secret'
-}));
+}).unless({path: ['/users/new']}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false

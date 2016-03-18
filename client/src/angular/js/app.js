@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('polygonStadiumApp', ['ngRoute']).config(function ($httpProvider) {
+angular.module('polygonStadiumApp', ['ngRoute', 'angular-jwt']).config(function ($httpProvider) {
   $httpProvider.interceptors.push('authInterceptor');
 });

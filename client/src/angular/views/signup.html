@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="../css/signup.css">
+<div class="container">
+  <h1 class="push-down title">POLYGON STADIUM</h1>
+  <div class="col-md-offset-4 col-md-4 material-high" id="signup">
+    <h2 class="center">SIGNUP</h2>
+    <div class="form-group label-floating">
+      <label class="control-label">USERNAME</label>
+      <input ng-model="SC.newUser.username" type="text" class="form-control" />
+    </div>
+    <div class="form-group label-floating">
+      <label class="control-label">EMAIL</label>
+      <input ng-model="SC.newUser.email" type="email" class="form-control" />
+    </div>
+    <div class="form-group label-floating has-success">
+      <label class="control-label">PASSWORD</label>
+      <input ng-model="SC.newUser.password" type="password" class="form-control" />
+    </div>
+    <div class="form-group label-floating has-success">
+      <label class="control-label">CONFIRM PASSWORD</label>
+      <input type="password" class="form-control" />
+    </div>
+    <button ng-click="SC.signup()" type="button" class="btn btn-raised stretch material-hover signup">SIGNUP</button>
+    <button class="btn btn-raised stretch material-hover login">LOGIN</button>
+  </div>
+</div>

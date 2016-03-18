@@ -7,6 +7,8 @@
   <!-- Material Design fonts -->
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Specific Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Orbitron:400,900,700,500' rel='stylesheet' type='text/css'>
   <!-- Jquery -->
   <script src="lib/jquery/dist/jquery.min.js" charset="utf-8"></script>
   <!-- Bootstrap -->
@@ -28,11 +30,36 @@
   <script src="js/services.js" charset="utf-8"></script>
   <script src="js/directives.js" charset="utf-8"></script>
   <script src="js/factories.js" charset="utf-8"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
   <!-- Style -->
   <link rel="stylesheet" href="css/style.min.css">
 </head>
 
 <body>
+  <div ng-controller="NavbarController as NC" class="navbar navbar-fixed-top material-high">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand font-orbitron" ng-click="NC.goToLogin()" href="javascript:void(0)"><img class="logo" src="../images/polygon.png" alt="..."></a>
+        <ul class="nav navbar-nav">
+          <li class="font-orbitron"><a href="javascript:void(0)" ng-click="NC.playNow()">PLAY POLYGON STADIUM</a></li>
+        </ul>
+      </div>
+      <div class="navbar-collapse collapse navbar-responsive-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a ng-click="NC.goToSignup()" ng-if="NC.user.id === 'none'" href="javascript:void(0)" class="font-orbitron">Signup</a></li>
+          <li class="dropdown">
+            <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle font-orbitron" data-toggle="dropdown" ng-click="NC.goToLogin()">{{NC.user.username}}
+            <b class="caret"></b></a>
+            <ul ng-if="NC.user.id !== 'none'" class="dropdown-menu">
+              <li><a href="javascript:void(0)">Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="javascript:void(0)" ng-click="NC.logout()">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div ng-view></div>
 </body>
   <script src="../lib/three.min.js"></script>

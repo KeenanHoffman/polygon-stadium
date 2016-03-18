@@ -1,11 +1,9 @@
 html, body {
   width: 100%;
   height: 100%;
-  background-color: rgba(150, 150, 150, 0);
 }
 body {
-  background-color: #ffffff;
-  margin: 0;
+  margin: -1px;
   overflow: hidden;
   font-family: arial;
 }
@@ -19,6 +17,23 @@ body {
     margin: 0;
   }
 }
+.save {
+  color: #212121;
+  border-radius: 12rem;
+  border: 3px #4A148C solid;
+  text-align: center;
+  background-color: #26A69A;
+  margin-bottom: 1rem;
+}
+.new-game {
+  color: #FAFAFA;
+  border-radius: 12rem;
+  text-align: center;
+  background-color: #4A148C;
+}
+.hidden {
+  border: none;
+}
 #hud {
   pointer-events: none;
   width: 100%;
@@ -28,7 +43,7 @@ body {
   top: 0;
   z-index: 1;
 }
-.stretch {
+.stretch-across {
   width: 100%;
   height: 100%;
 }
@@ -66,7 +81,7 @@ body {
   background: linear-gradient(to top, #2196F3, #1565C0);
 }
 #life-counter {
-  margin-top: -0.5%;
+  margin-top: 0.4%;
   margin-left: 1%;
   float: left;
 }

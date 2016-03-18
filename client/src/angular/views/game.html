@@ -1,15 +1,24 @@
 <link rel="stylesheet" href="/css/game.css">
-<div ng-hide="GC.saveChosen" ng-repeat="save in GC.saves track by $index">
-  <pre ng-click="GC.chooseSave(save, $index)">{{save}}</pre>
+<div class="below-nav" ng-if="!GC.saveChosen">
+  <div ng-if="!GC.saveChosen" ng-repeat="save in GC.saves track by $index">
+    <div class="material-low material-hover save col-md-offset-4 col-md-4" ng-click="GC.chooseSave(save, $index)">
+      <h1>ROUND: {{save.saved_game.round}}</h1>
+      <h4>SCORE: {{save.saved_game.score}}</h4>
+      <p>Last played: {{save.updatedAt | date:'MM/dd'}}</p>
+    </div>
+  </div>
+  <div ng-class="{hidden: GC.saves.length > 4}" class="material-low material-hover new-game col-md-offset-5 col-md-2">
+    <h2 ng-click="GC.chooseSave('new')">NEW GAME</h2>
+  </div>
 </div>
-<h1 ng-hide="GC.saveChosen || GC.saves.length > 4" ng-click="GC.chooseSave('new')">NEW GAME</h1>
+
 <div ng-if="GC.saveChosen">
   <div id="instructions">
     <h3>Click to play</h3>
     <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
   </div>
   <div id="hud">
-    <img src="../../images/hud.png" class="stretch" alt="..." />
+    <img src="../../images/hud.png" class="stretch-across" alt="..." />
     <div id="upper-left">
       <h1 id="round">Round 0</h1>
       <h3 id="enemies-remaining">Enemies Remaining</h3>
@@ -24,7 +33,7 @@
           <span class="sr-only"></span>
         </div>
       </div>
-      <h1 id="life-counter">100%</h1>
+      <h2 id="life-counter">100%</h2>
     </div>
   </div>
   <div id="game"></div>
