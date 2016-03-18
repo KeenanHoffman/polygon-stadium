@@ -48,10 +48,10 @@ function loginController($scope, $http, $window) {
         $window.sessionStorage.token = data.token;
         $window.location.href = '#/play';
       })
-      .error(function(data, status, headers, config) {
+      .error(function(data/*, status, headers, config*/) {
         // Erase the token if the user fails to log in
         delete $window.sessionStorage.token;
-        console.log('error');
+        console.log(data);
       });
   };
   vm.signup = function() {
@@ -102,14 +102,18 @@ function signupController($scope, $http, $window) {
   var vm = this;
   vm.newUser = {};
   vm.signup = function() {
-    console.log( vm.newUser);
+    delete vm.newUser.confirmPassword;
+    console.log(vm.newUser);
     $http.post('http://localhost:3000/users/new', vm.newUser)
-      .success(function(data, status, headers, config) {
-        console.log('success');
+      .success(function(data/*, status, headers, config*/) {
+        console.log(data);
         $window.location.href = '#/';
       })
-      .error(function(data, status, headers, config) {
-        console.log('error');
+      .error(function(data/*, status, headers, config*/) {
+        console.log(data);
       });
+  };
+  vm.goToLogin = function() {
+    $window.location.href = '#/';
   };
 }

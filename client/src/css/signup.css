@@ -34,3 +34,24 @@
   background-color: #26A69A !important;
   color: #212121 !important;
 }
+#username.control-label,
+#email.control-label,
+#password.control-label,
+#confirm-password.control-label {
+  color: #212121;
+}
+#username.control-label.valid,
+#email.control-label.valid, #password.control-label.valid,
+#confirm-password.control-label.valid {
+  color: #4CAF50;
+}
+#username.control-label.invalid,
+#email.control-label.invalid, #password.control-label.invalid,
+#confirm-password.control-label.invalid {
+  color: #F44336;
+}
+.help-block {
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  color: #212121 !important;
+}

@@ -510,7 +510,8 @@ function beginGameLogic(userService) {
 
         function onWindowResize() {
           document.querySelector('#hud').style.width = $(window).width() + 'px';
-          document.querySelector('.stretch').style.width = $(window).width() + 'px';
+          document.querySelector('.stretch-across').style.width = $(window).width() + 'px';
+          console.log('resize');
           camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);

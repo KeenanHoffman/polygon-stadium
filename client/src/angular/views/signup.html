@@ -3,23 +3,35 @@
   <h1 class="push-down title">POLYGON STADIUM</h1>
   <div class="col-md-offset-4 col-md-4 material-high" id="signup">
     <h2 class="center">SIGNUP</h2>
-    <div class="form-group label-floating">
-      <label class="control-label">USERNAME</label>
-      <input ng-model="SC.newUser.username" type="text" class="form-control" />
-    </div>
-    <div class="form-group label-floating">
-      <label class="control-label">EMAIL</label>
-      <input ng-model="SC.newUser.email" type="email" class="form-control" />
-    </div>
-    <div class="form-group label-floating has-success">
-      <label class="control-label">PASSWORD</label>
-      <input ng-model="SC.newUser.password" type="password" class="form-control" />
-    </div>
-    <div class="form-group label-floating has-success">
-      <label class="control-label">CONFIRM PASSWORD</label>
-      <input type="password" class="form-control" />
-    </div>
-    <button ng-click="SC.signup()" type="button" class="btn btn-raised stretch material-hover signup">SIGNUP</button>
-    <button class="btn btn-raised stretch material-hover login">LOGIN</button>
+    <form name='newUser' ng-submit="SC.signup()" novalidate>
+      <div class="form-group label-floating">
+        <label id="username" ng-class="{ valid: newUser.username.$valid && newUser.username.$touched, invalid: !newUser.username.$valid && newUser.username.$touched }" class="control-label">USERNAME</label>
+        <input name='username' ng-pattern="/^[a-z0-9]+$/" ng-minlength="4" ng-maxlength="16" required ng-model="SC.newUser.username" type="text" class="form-control" />
+        <p ng-if="newUser.username.$error.required" class="help-block">This field is required.</p>
+        <p ng-if="newUser.username.$error.minlength" class="help-block">Usernames must be at least 4 characters.</p>
+        <p ng-if="newUser.username.$error.maxlength" class="help-block">Passwords must be no more than 16 characters.</p>
+        <p ng-if="newUser.username.$error.pattern" class="help-block">Usernames can only contain letters and numbers.</p>
+      </div>
+      <div class="form-group label-floating">
+        <label id="email" ng-class="{ valid: newUser.email.$valid && newUser.email.$touched, invalid: !newUser.email.$valid && newUser.email.$touched }" class="control-label">EMAIL</label>
+        <input name='email' required ng-model="SC.newUser.email" type="email" class="form-control" />
+        <p ng-if="!newUser.email.$valid" class="help-block">Email is invalid.</p>
+      </div>
+      <div class="form-group label-floating">
+        <label id="password" ng-class="{ valid: newUser.password.$valid && newUser.password.$touched, invalid: !newUser.password.$valid && newUser.password.$touched }" class="control-label">PASSWORD</label>
+        <input name="password" ng-minlength="8" ng-maxlength="24" required ng-model="SC.newUser.password" type="password" class="form-control" />
+        <p ng-if="newUser.password.$error.minlength" class="help-block">Passwords must be at least 8 characters.</p>
+        <p ng-if="newUser.password.$error.maxlength" class="help-block">Passwords must be no more than 24 characters.</p>
+        <p ng-if="newUser.password.$error.required" class="help-block">This field is required.</p>
+      </div>
+      <div class="form-group label-floating">
+        <label id="confirm-password" ng-class="{ valid: newUser.confirmPassword.$touched && SC.newUser.confirmPassword === SC.newUser.password, invalid: newUser.confirmPassword.$touched && (SC.newUser.confirmPassword !== SC.newUser.password || newUser.confirmPassword.$error.required) }" class="control-label">CONFIRM PASSWORD</label>
+        <input name="confirmPassword" required ng-model="SC.newUser.confirmPassword" type="password" class="form-control" />
+        <p ng-if="SC.newUser.confirmPassword !== SC.newUser.password && !newUser.confirmPassword.$error.required" class="help-block">Passwords do not match.</p>
+        <p ng-if="newUser.confirmPassword.$error.required" class="help-block">This field is required.</p>
+      </div>
+      <button ng-disabled="!newUser.$valid || SC.newUser.confirmPassword !== SC.newUser.password"type="submit" class="btn btn-raised stretch material-hover signup">SIGNUP</button>
+    </form>
+    <button ng-click="SC.goToLogin()" class="btn btn-raised stretch material-hover login">LOGIN</button>
   </div>
 </div>
