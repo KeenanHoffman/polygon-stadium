@@ -3,15 +3,17 @@
   <h1 class="push-down title">POLYGON STADIUM</h1>
   <div class="col-md-offset-4 col-md-4 material-high" id="login">
     <h2 class="center">LOGIN</h2>
-    <div class="form-group label-floating">
-      <label id="username" class="control-label">USERNAME</label>
-      <input ng-model="LC.user.username" type="text" class="form-control" />
-    </div>
-    <div class="form-group label-floating has-success">
-      <label id="password" class="control-label">PASSWORD</label>
-      <input ng-model="LC.user.password" type="password" class="form-control" />
-    </div>
-    <button ng-disabled="!LC.user.password || !LC.user.username" ng-click="LC.login()" type="button" class="btn btn-raised stretch material-hover login">LOGIN</button>
+    <form ng-submit="LC.login()" >
+      <div class="form-group label-floating">
+        <label id="username" class="control-label">USERNAME</label>
+        <input ng-model="LC.user.username" type="text" class="form-control" />
+      </div>
+      <div class="form-group label-floating has-success">
+        <label id="password" class="control-label">PASSWORD</label>
+        <input ng-model="LC.user.password" type="password" class="form-control" />
+      </div>
+      <button ng-disabled="!LC.user.password || !LC.user.username" type="submit" class="btn btn-raised stretch material-hover login">LOGIN</button>
+    </form>
     <button ng-click="LC.signup()" type="button" class="btn btn-raised stretch material-hover signup">SIGNUP</button>
     <button ng-click="LC.playNow()" type="button" class="btn btn-raised stretch material-hover play-now">PLAY WITHOUT AN ACCOUNT</button>
   </div>

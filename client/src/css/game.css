@@ -52,6 +52,7 @@ body {
   left: 2.1%;
   top: -1.5%;
   z-index: 2;
+  width: 20%;
   text-align: center;
 }
 #upper-right {
@@ -59,6 +60,7 @@ body {
   right: 3%;
   top: -1.5%;
   z-index: 2;
+  width: 18%;
   text-align: center;
 }
 #bottom-middle {
