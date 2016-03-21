@@ -7,7 +7,7 @@ function isValidAccount(newUser, userModel) {
     if (!isValidUsername(newUser.username)) resolve(false);
     if (!isValidEmail(newUser.email)) resolve(false);
     if (!isValidPassword(newUser.password)) resolve(false);
-    isUnique(newUser.username, userModel).then(function(result) {
+    isUniqueUsername(newUser.username, userModel).then(function(result) {
         resolve(result);
       })
       .catch(function(err) {
@@ -15,10 +15,6 @@ function isValidAccount(newUser, userModel) {
       });
   });
 }
-
-module.exports = {
-  isValidAccount
-};
 
 function isValidUsername(username) {
   return (iz.alphaNumeric(username) && iz.minLength(username, 4) && iz.maxLength(username, 16));
@@ -31,7 +27,8 @@ function isValidPassword(password) {
 function isValidEmail(email) {
   return iz.email(email);
 }
-function isUnique(username, userModel) {
+
+function isUniqueUsername(username, userModel) {
   return new Promise(function(resolve, reject) {
     userModel.findOne({
         username: username
@@ -46,3 +43,10 @@ function isUnique(username, userModel) {
       });
   });
 }
+module.exports = {
+  isValidAccount,
+  isValidUsername,
+  isValidPassword,
+  isValidEmail,
+  isUniqueUsername
+};

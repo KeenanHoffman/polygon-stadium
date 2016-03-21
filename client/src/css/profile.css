@@ -1,0 +1,74 @@
+.container {
+  background-color: #FAFAFA;
+  border-radius: 10px;
+  border: 3px #4A148C solid;
+}
+#username.control-label,
+#email.control-label,
+#new-password.control-label,
+#confirm-password.control-label,
+#current-password.control-label {
+  color: #212121;
+}
+#username.control-label.valid,
+#email.control-label.valid,
+#new-password.control-label.valid,
+#confirm-password.control-label.valid,
+#current-password.control-label.valid {
+  color: #4CAF50;
+}
+#username.control-label.invalid,
+#email.control-label.invalid,
+#new-password.control-label.invalid,
+#confirm-password.control-label.invalid,
+#current-password.control-label.invalid {
+  color: #F44336;
+}
+.help-block {
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  color: #212121 !important;
+}
+.right-align {
+  margin-top: 4%;
+  text-align: right;
+}
+.bold {
+  font-weight: 700;
+}
+.stretch-half {
+  display: inline-block;;
+  width: 49.7%;
+}
+#update {
+  letter-spacing: 3px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  background-color: #4A148C !important;
+  color: #FAFAFA !important;
+}
+.logo2 {
+  position: fixed;
+  top: 34rem;
+  left: 3%;
+  width: 50rem;
+}
+.message {
+  color: #FAFAFA;
+  border-radius: 10px;
+  border: 3px #212121 solid;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: absolute;
+  top: 8rem;
+  right: 2rem;
+}
+.success {
+  background-color: #1B5E20;
+}
+
+.error {
+  background-color: #B71C1C;
+}

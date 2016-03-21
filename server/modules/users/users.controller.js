@@ -2,6 +2,8 @@
 
 const bcryptService = require('../services/bcrypt.service');
 const userValidation = require('./users.validation');
+const authService = require('../services/auth.service');
+const jwt = require('jsonwebtoken');
 
 function getAll(req, res, next) {
   req.models.user.find().populate('savedGames').exec(function(err, users) {
@@ -41,12 +43,81 @@ function create(req, res, next) {
 }
 
 function update(req, res, next) {
-  req.models.user.update({
-    id: req.params.id
-  }, req.body, function(err, user) {
-    if (err) next(err);
-    res.json(user);
-  });
+  authService.authenticateUser(req.params, req.body.currentPassword, req.models.user)
+    .then(function(authenticatedUser) {
+      if (authenticatedUser) {
+        if (req.body.email == undefined) {
+          delete req.body.email;
+        }
+        if (!userValidation.isValidEmail(req.body.email)) {
+          res.status(401).json({
+            status: 'Invalid Email'
+          });
+        }
+        if (req.body.password == undefined) {
+          delete req.body.password;
+        }
+        if (!userValidation.isValidPassword(req.body.password)) {
+          res.status(401).json({
+            status: 'Invalid Password'
+          });
+        }
+        if (req.body.username == undefined) {
+          delete req.body.username;
+        }
+        if (!userValidation.isValidUsername(req.body.username)) {
+          res.status(401).json({
+            status: 'Invalid Username'
+          });
+        } else {
+          userValidation.isUniqueUsername(req.body.username, req.models.user)
+            .then(function(result) {
+              if (result) {
+                if (req.body.password) {
+                  bcryptService.hashPassword(req.body.password).then(function(hashedPassword) {
+                    req.body.password = hashedPassword;
+                    req.models.user.update({
+                      id: req.params.id
+                    }, req.body, function(err, user) {
+                      if (err) next(err);
+                      delete user.password;
+                      var token = jwt.sign(user[0], 'secret', {
+                        expiresIn: 60 * 60 * 5
+                      });
+                      res.json({
+                        token: token
+                      });
+                    });
+                  });
+                } else {
+                  req.models.user.update({
+                    id: req.params.id
+                  }, req.body, function(err, user) {
+                    if (err) next(err);
+                    console.log(user);
+                    delete user.password;
+                    var token = jwt.sign(user[0], 'secret', {
+                      expiresIn: 60 * 60 * 5
+                    });
+                    res.json({
+                      token: token
+                    });
+                  });
+                }
+              } else {
+                res.status(401).json({
+                  status: 'Username is Taken'
+                });
+              }
+            })
+            .catch(function(err) {
+              next(err);
+            });
+        }
+      } else {
+        res.status(401).json('Wrong user or password');
+      }
+    });
 }
 
 function remove(req, res, next) {
@@ -61,7 +132,6 @@ function remove(req, res, next) {
 }
 
 function saveGame(req, res, next) {
-  // console.log(JSON.parse(req.body.save));
   req.models.saved_game.findOrCreate({
     id: req.body.saveId
   }, {
@@ -73,7 +143,6 @@ function saveGame(req, res, next) {
       if (err) next(err);
       var isNewGameSave = true;
       user.savedGames.forEach(function(element) {
-        // console.log(savedGame.id, user.savedGames);
         if (savedGame.id === element.id) {
           isNewGameSave = false;
         }

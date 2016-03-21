@@ -3,6 +3,7 @@
 angular.module('polygonStadiumApp')
   .controller('NavbarController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', navbarController])
   .controller('LoginController', ['$scope', '$http', '$window', loginController])
+  .controller('ProfileController', ['$scope', '$http', '$window', 'userService', profileController])
   .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', gameController])
   .controller('SignupController', ['$scope', '$http', '$window', signupController]);
 
@@ -17,12 +18,15 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
     $window.location.href = '#/signup';
   };
   vm.goToLogin = function() {
-    if(vm.user.id === 'none') {
+    if (vm.user.id === 'none') {
       $window.location.href = '#/';
     }
   };
   vm.goHome = function() {
-      $window.location.href = '#/';
+    $window.location.href = '#/';
+  };
+  vm.goToProfile = function() {
+    $window.location.href = '#/profile';
   };
   vm.logout = function() {
     delete $window.sessionStorage.token;
@@ -33,8 +37,8 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
     $window.location.href = '#/play';
   };
   $scope.$on('$routeChangeStart', function() {
-   vm.user = userService.getUser();
- });
+    vm.user = userService.getUser();
+  });
 }
 
 
@@ -47,11 +51,11 @@ function loginController($scope, $http, $window) {
   vm.user = {};
   vm.login = function() {
     $http.post('http://localhost:3000/auth', vm.user)
-      .success(function(data, status, headers, config) {
+      .success(function(data /*, status, headers, config*/ ) {
         $window.sessionStorage.token = data.token;
         $window.location.href = '#/play';
       })
-      .error(function(data/*, status, headers, config*/) {
+      .error(function(data /*, status, headers, config*/ ) {
         // Erase the token if the user fails to log in
         delete $window.sessionStorage.token;
         console.log(data);
@@ -62,6 +66,56 @@ function loginController($scope, $http, $window) {
   };
   vm.playNow = function() {
     $window.location.href = '#/play';
+  };
+}
+
+function profileController($scope, $http, $window, userService) {
+  $(document).ready(function() {
+    $.material.init();
+    $('.dropdown-toggle').dropdown();
+  });
+  var vm = this;
+  var user = userService.getUser();
+
+  //Use a set timeout to aviod $digest errors -
+  // "...when the application's model becomes unstable and each $digest cycle triggers a state
+  // change and subsequent $digest cycle. Angular detects this situation and prevents an infinite loop from
+  // causing the browser to become unresponsive."
+  setTimeout(function() {
+    if (user.id === 'none') {
+      console.log(user.id);
+      $window.location.href = '#/';
+    }
+  }, 0);
+  vm.update = function() {
+    if (vm.updatedUser.newPassword) {
+      vm.updatedUser.password = vm.updatedUser.newPassword;
+      delete vm.updatedUser.newPassword;
+      delete vm.updatedUser.confirmPassword;
+    }
+    if (!vm.updatedUser.newPassword &&
+      !vm.updatedUser.email &&
+      !vm.updatedUser.username) {
+        vm.message = 'No Changes Where Submitted';
+        vm.success = false;
+      } else {
+        $http.put('http://localhost:3000/users/' + user.id, {
+          username: vm.updatedUser.username,
+          email: vm.updatedUser.email,
+          password: vm.updatedUser.password,
+          currentPassword: vm.updatedUser.currentPassword
+        })
+        .success(function(data/*, status, headers, config*/) {
+          $window.sessionStorage.token = data.token;
+          user = userService.getUser();
+          vm.message = 'Your Profile Has Been Updated';
+          vm.success = true;
+        })
+        .error(function(data /*, status, headers, config*/ ) {
+          vm.message = data.status;
+          vm.success = false;
+        });
+      }
   };
 }
 
@@ -108,11 +162,11 @@ function signupController($scope, $http, $window) {
     delete vm.newUser.confirmPassword;
     console.log(vm.newUser);
     $http.post('http://localhost:3000/users/new', vm.newUser)
-      .success(function(data/*, status, headers, config*/) {
+      .success(function(data /*, status, headers, config*/ ) {
         console.log(data);
         $window.location.href = '#/';
       })
-      .error(function(data/*, status, headers, config*/) {
+      .error(function(data /*, status, headers, config*/ ) {
         console.log(data);
       });
   };

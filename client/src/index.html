@@ -49,9 +49,9 @@
           <li><a ng-click="NC.goToSignup()" ng-if="NC.user.id === 'none'" href="javascript:void(0)" class="font-orbitron">Signup</a></li>
           <li class="dropdown">
             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle font-orbitron" data-toggle="dropdown" ng-click="NC.goToLogin()">{{NC.user.username}}
-            <b class="caret"></b></a>
+            <b ng-hide="NC.user.id === 'none'" class="caret"></b></a>
             <ul ng-if="NC.user.id !== 'none'" class="dropdown-menu">
-              <li><a href="javascript:void(0)">Profile</a></li>
+              <li><a ng-click="NC.goToProfile()" href="javascript:void(0)">Profile</a></li>
               <li class="divider"></li>
               <li><a href="javascript:void(0)" ng-click="NC.logout()">Logout</a></li>
             </ul>

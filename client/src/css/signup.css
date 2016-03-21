@@ -1,10 +1,6 @@
 .container {
   position: relative;
 }
-.push-down {
-  text-align: center;
-  margin-top: 12rem;
-}
 #signup {
   color: #212121;
   border-radius: 10px;

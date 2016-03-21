@@ -12,6 +12,11 @@ angular.module('polygonStadiumApp').config(function($routeProvider, $locationPro
       controller: 'SignupController as SC',
       activetab: 'material'
     })
+    .when('/profile', {
+      templateUrl: '../views/profile.html',
+      controller: 'ProfileController as PC',
+      activetab: 'material'
+    })
     .when('/material', {
       templateUrl: '../views/material.html',
       controller: 'LoginController as TC',
