@@ -34,4 +34,7 @@
     </form>
     <button ng-click="SC.goToLogin()" class="btn btn-raised stretch material-hover login">LOGIN</button>
   </div>
+  <div ng-class="{ success: SC.success, error: !SC.success }" class="message" ng-show="SC.message">
+    <h3>{{PC.message}}</h3>
+  </div>
 </div>

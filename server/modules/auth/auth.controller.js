@@ -17,7 +17,9 @@ function login(req, res, next) {
           token: token
         });
       } else {
-        res.status(401).json('Wrong user or password');
+        res.status(401).json({
+          status: 'Username and Password Do Not Match'
+        });
       }
     }).catch(function(err) {
       next(err);

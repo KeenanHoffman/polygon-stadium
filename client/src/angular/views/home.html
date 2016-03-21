@@ -3,7 +3,10 @@
   <h1 class="push-down center title">POLYGON STADIUM</h1>
   <div class="col-md-offset-4 col-md-4 material-high" id="login">
     <h2 class="center">LOGIN</h2>
-    <form ng-submit="LC.login()" >
+    <div ng-class="{ success: LC.success, error: !LC.success }" class="message" ng-show="LC.message">
+      <p class="reduce-bottom-margin">{{LC.message}}</p>
+    </div>
+    <form ng-class="{ 'margin-top': LC.message }" ng-submit="LC.login()" >
       <div class="form-group label-floating">
         <label id="username" class="control-label">USERNAME</label>
         <input ng-model="LC.user.username" type="text" class="form-control" />

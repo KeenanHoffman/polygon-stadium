@@ -7,7 +7,6 @@ function userServiceLogic($http, $window, jwtHelper) {
     getUser: function() {
       try {
         var user = jwtHelper.decodeToken($window.sessionStorage.token);
-        console.log(user);
         return user;
       } catch (err) {
         return {

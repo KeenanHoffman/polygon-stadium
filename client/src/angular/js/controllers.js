@@ -58,7 +58,8 @@ function loginController($scope, $http, $window) {
       .error(function(data /*, status, headers, config*/ ) {
         // Erase the token if the user fails to log in
         delete $window.sessionStorage.token;
-        console.log(data);
+        vm.message = data.status;
+        vm.success = false;
       });
   };
   vm.signup = function() {
@@ -83,7 +84,6 @@ function profileController($scope, $http, $window, userService) {
   // causing the browser to become unresponsive."
   setTimeout(function() {
     if (user.id === 'none') {
-      console.log(user.id);
       $window.location.href = '#/';
     }
   }, 0);
@@ -160,14 +160,14 @@ function signupController($scope, $http, $window) {
   vm.newUser = {};
   vm.signup = function() {
     delete vm.newUser.confirmPassword;
-    console.log(vm.newUser);
     $http.post('http://localhost:3000/users/new', vm.newUser)
       .success(function(data /*, status, headers, config*/ ) {
-        console.log(data);
         $window.location.href = '#/';
       })
       .error(function(data /*, status, headers, config*/ ) {
-        console.log(data);
+        // console.log(data);
+        vm.message = data.status;
+        vm.success = false;
       });
   };
   vm.goToLogin = function() {

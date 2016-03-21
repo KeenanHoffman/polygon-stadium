@@ -30,3 +30,18 @@
   background-color: #26A69A !important;
   color: #212121 !important;
 }
+.message {
+  color: #FAFAFA;
+  border-radius: 10px;
+  border: 3px #212121 solid;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-top: -2rem;
+  margin-right:  1.7rem;
+}
+.margin-top {
+  margin-top: 8rem;
+}
+.reduce-bottom-margin {
+  margin-bottom: 0;
+}
