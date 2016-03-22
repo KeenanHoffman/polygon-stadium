@@ -131,6 +131,9 @@ function remove(req, res, next) {
 }
 
 function saveGame(req, res, next) {
+  if (req.body.score === null) {
+    next(new Error('Scores Cannot be null'));
+  }
   req.models.saved_game.findOrCreate({
     id: req.body.saveId
   }, {
@@ -170,7 +173,6 @@ function saveGame(req, res, next) {
           }, {
             score: req.body.score
           }, function() {
-            console.log(req.body.score);
             res.status(200).json({
               status: 'game saved'
             });

@@ -4,9 +4,9 @@ angular.module('polygonStadiumApp')
   .controller('NavbarController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', navbarController])
   .controller('LoginController', ['$scope', '$http', '$window', loginController])
   .controller('ProfileController', ['$scope', '$http', '$window', 'userService', profileController])
-  .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', gameController])
+  .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', '$compile', gameController])
   .controller('SignupController', ['$scope', '$http', '$window', signupController])
-  .controller('LeaderboardController', ['$scope', '$http', '$window', leaderboardController]);
+  .controller('LeaderboardController', ['$scope', '$http', leaderboardController]);
 
 function navbarController($scope, $http, $window, jwtHelper, userService) {
   $(document).ready(function() {
@@ -123,12 +123,15 @@ function profileController($scope, $http, $window, userService) {
   };
 }
 
-function gameController($scope, $http, $window, jwtHelper, userService) {
+function gameController($scope, $http, $window, jwtHelper, userService, $compile) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
+
+  var childScope;
+
   $scope.data = {};
   vm.saveChosen = false;
   var user = userService.getUser();
@@ -153,6 +156,10 @@ function gameController($scope, $http, $window, jwtHelper, userService) {
     }
     vm.saveChosen = true;
   };
+  $scope.$on('$routeChangeStart', function() {
+    $(document).off();
+    $('.game-placeholder').empty();
+  });
 }
 
 function signupController($scope, $http, $window) {
@@ -178,7 +185,7 @@ function signupController($scope, $http, $window) {
   };
 }
 
-function leaderboardController($scope, $http, $window) {
+function leaderboardController($scope, $http) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
