@@ -1,0 +1,15 @@
+.push-down {
+  margin-top: 6rem;
+}
+table {
+  color: #FAFAFA;
+}
+.inline {
+  display: inline;
+}
+tbody tr:hover {
+  color: #212121;
+}
+.trim {
+  margin: 1rem;
+}

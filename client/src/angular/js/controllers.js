@@ -5,7 +5,8 @@ angular.module('polygonStadiumApp')
   .controller('LoginController', ['$scope', '$http', '$window', loginController])
   .controller('ProfileController', ['$scope', '$http', '$window', 'userService', profileController])
   .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', gameController])
-  .controller('SignupController', ['$scope', '$http', '$window', signupController]);
+  .controller('SignupController', ['$scope', '$http', '$window', signupController])
+  .controller('LeaderboardController', ['$scope', '$http', '$window', leaderboardController]);
 
 function navbarController($scope, $http, $window, jwtHelper, userService) {
   $(document).ready(function() {
@@ -35,6 +36,9 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
   };
   vm.playNow = function() {
     $window.location.href = '#/play';
+  };
+  vm.goToLeaderboard = function() {
+    $window.location.href = '#/leaderboard';
   };
   $scope.$on('$routeChangeStart', function() {
     vm.user = userService.getUser();
@@ -96,16 +100,16 @@ function profileController($scope, $http, $window, userService) {
     if (!vm.updatedUser.newPassword &&
       !vm.updatedUser.email &&
       !vm.updatedUser.username) {
-        vm.message = 'No Changes Where Submitted';
-        vm.success = false;
-      } else {
-        $http.put('http://localhost:3000/users/' + user.id, {
+      vm.message = 'No Changes Where Submitted';
+      vm.success = false;
+    } else {
+      $http.put('http://localhost:3000/users/' + user.id, {
           username: vm.updatedUser.username,
           email: vm.updatedUser.email,
           password: vm.updatedUser.password,
           currentPassword: vm.updatedUser.currentPassword
         })
-        .success(function(data/*, status, headers, config*/) {
+        .success(function(data /*, status, headers, config*/ ) {
           $window.sessionStorage.token = data.token;
           user = userService.getUser();
           vm.message = 'Your Profile Has Been Updated';
@@ -115,7 +119,7 @@ function profileController($scope, $http, $window, userService) {
           vm.message = data.status;
           vm.success = false;
         });
-      }
+    }
   };
 }
 
@@ -165,7 +169,6 @@ function signupController($scope, $http, $window) {
         $window.location.href = '#/';
       })
       .error(function(data /*, status, headers, config*/ ) {
-        // console.log(data);
         vm.message = data.status;
         vm.success = false;
       });
@@ -173,4 +176,16 @@ function signupController($scope, $http, $window) {
   vm.goToLogin = function() {
     $window.location.href = '#/';
   };
+}
+
+function leaderboardController($scope, $http, $window) {
+  $(document).ready(function() {
+    $.material.init();
+    $('.dropdown-toggle').dropdown();
+  });
+  var vm = this;
+  $http.get('http://localhost:3000/leaderboard')
+    .success(function(scores) {
+      vm.leaderboard = scores;
+    });
 }

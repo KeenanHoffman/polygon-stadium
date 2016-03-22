@@ -10,17 +10,17 @@ angular.module('polygonStadiumApp').config(function($routeProvider, $locationPro
     .when('/signup', {
       templateUrl: '../views/signup.html',
       controller: 'SignupController as SC',
-      activetab: 'material'
+      activetab: 'signup'
     })
     .when('/profile', {
       templateUrl: '../views/profile.html',
       controller: 'ProfileController as PC',
-      activetab: 'material'
+      activetab: 'profile'
     })
-    .when('/material', {
-      templateUrl: '../views/material.html',
-      controller: 'LoginController as TC',
-      activetab: 'material'
+    .when('/leaderboard', {
+      templateUrl: '../views/leaderboard.html',
+      controller: 'LeaderboardController as LBC',
+      activetab: 'leaderboard'
     })
     .when('/play', {
       templateUrl: '../views/game.html',

@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="../css/leaderboard.css">
+<div class="container push-down">
+  <div class="col-md-offset-2 col-md-8">
+    <table class="table table-hover">
+      <thead>
+        <th><h2>#</h2></th>
+        <th><h2>SCORE</h2></th>
+        <th><h2>PLAYER</h2></th>
+      </thead>
+      <tbody ng-repeat="leader in LBC.leaderboard track by $index">
+        <tr>
+          <td><h3 class="trim">{{$index + 1}}</h3></td>
+          <td><h3 class="trim">{{leader.score}}</h3></td>
+          <td><h3 class="trim">{{leader.player[0].username}}</h3></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -46,6 +46,7 @@
       </div>
       <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav navbar-right">
+          <li><a ng-click="NC.goToLeaderboard()" class="font-orbitron" href="javascript:void(0)">LEADERBOARD</a></li>
           <li><a ng-click="NC.goToSignup()" ng-if="NC.user.id === 'none'" href="javascript:void(0)" class="font-orbitron">Signup</a></li>
           <li class="dropdown">
             <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle font-orbitron" data-toggle="dropdown" ng-click="NC.goToLogin()">{{NC.user.username}}

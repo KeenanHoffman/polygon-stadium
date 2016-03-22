@@ -6,7 +6,7 @@
     <form name='newUser' ng-submit="SC.signup()" novalidate>
       <div class="form-group label-floating">
         <label id="username" ng-class="{ valid: newUser.username.$valid && newUser.username.$touched, invalid: !newUser.username.$valid && newUser.username.$touched }" class="control-label">USERNAME</label>
-        <input name='username' ng-pattern="/^[a-z0-9]+$/" ng-minlength="4" ng-maxlength="16" required ng-model="SC.newUser.username" type="text" class="form-control" />
+        <input name='username' ng-pattern="/^[a-z0-9A-Z]+$/" ng-minlength="4" ng-maxlength="16" required ng-model="SC.newUser.username" type="text" class="form-control" />
         <p ng-if="newUser.username.$error.required" class="help-block">This field is required.</p>
         <p ng-if="newUser.username.$error.minlength" class="help-block">Usernames must be at least 4 characters.</p>
         <p ng-if="newUser.username.$error.maxlength" class="help-block">Passwords must be no more than 16 characters.</p>
