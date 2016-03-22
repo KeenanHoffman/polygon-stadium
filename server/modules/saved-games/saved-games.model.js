@@ -7,6 +7,7 @@ module.exports = Waterline.Collection.extend({
   connection: 'myLocalPostgres',
   attributes: {
     user_id: 'integer',
+    score: 'integer',
     saved_game: 'json',
     player: {
       collection: 'user',

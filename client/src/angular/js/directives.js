@@ -86,6 +86,7 @@ function beginGameLogic(userService) {
           hud.healthBar.style.width = '100%';
           player.health = 10;
           player.maxHealth = 10;
+          player.finalScore = player.score;
           player.score = 0;
           hud.playerScore.innerHTML = player.score;
           round.loss = true;
@@ -119,6 +120,7 @@ function beginGameLogic(userService) {
                     url: 'http://localhost:3000/users/' + userId + '/save-game',
                     data: {
                       saveId: gameId,
+                      score: player.finalScore || player.score,
                       save: JSON.stringify(saveState)
                     },
                     headers: {
@@ -129,6 +131,7 @@ function beginGameLogic(userService) {
                     if (data.newGameId) {
                       gameId = data.newGameId;
                     }
+                    player.finalScore = undefined;
                   });
               }
             }, 0);

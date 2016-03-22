@@ -94,7 +94,6 @@ function update(req, res, next) {
                     id: req.params.id
                   }, req.body, function(err, user) {
                     if (err) next(err);
-                    console.log(user);
                     delete user.password;
                     var token = jwt.sign(user[0], 'secret', {
                       expiresIn: 60 * 60 * 5
@@ -136,6 +135,7 @@ function saveGame(req, res, next) {
     id: req.body.saveId
   }, {
     user_id: req.params.id,
+    score: req.body.score,
     saved_game: JSON.parse(req.body.save)
   }, function(err, savedGame) {
     if (err) next(err);
@@ -162,8 +162,18 @@ function saveGame(req, res, next) {
         }, {
           saved_game: JSON.parse(req.body.save)
         }, function() {
-          res.status(200).json({
-            status: 'game saved'
+          req.models.saved_game.update({
+            id: req.body.saveId,
+            score: {
+              '<': Number(req.body.score)
+            }
+          }, {
+            score: req.body.score
+          }, function() {
+            console.log(req.body.score);
+            res.status(200).json({
+              status: 'game saved'
+            });
           });
         });
       }
