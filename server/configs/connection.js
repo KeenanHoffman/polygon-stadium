@@ -17,6 +17,6 @@ module.exports = {
     }
   },
   defaults: {
-    migrate: 'alter'
+    migrate: process.env.MIGRATE
   }
 };
