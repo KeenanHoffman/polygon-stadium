@@ -1,6 +1,6 @@
 'use strict';
 
-const Waterline = require('Waterline');
+const Waterline = require('waterline');
 var orm = new Waterline();
 
 // get connection configs
