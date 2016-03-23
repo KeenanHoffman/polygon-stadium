@@ -81,7 +81,7 @@ function update(req, res, next) {
                     }, req.body, function(err, user) {
                       if (err) next(err);
                       delete user.password;
-                      var token = jwt.sign(user[0], 'secret', {
+                      var token = jwt.sign(user[0], process.env.SECRET, {
                         expiresIn: 60 * 60 * 5
                       });
                       res.json({
@@ -95,7 +95,7 @@ function update(req, res, next) {
                   }, req.body, function(err, user) {
                     if (err) next(err);
                     delete user.password;
-                    var token = jwt.sign(user[0], 'secret', {
+                    var token = jwt.sign(user[0], process.env.SECRET, {
                       expiresIn: 60 * 60 * 5
                     });
                     res.json({

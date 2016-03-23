@@ -1,5 +1,9 @@
 'use strict';
 
+require('dotenv').load({
+  silent: true
+});
+
 var postgresqlAdapter = require('sails-postgresql');
 module.exports = {
   adapters: {
@@ -9,8 +13,7 @@ module.exports = {
   connections: {
     myLocalPostgres: {
       adapter: 'postgres',
-      host: 'localhost',
-      database: 'polygon_stadium'
+      url: process.env.DATABASE_URL
     }
   },
   defaults: {

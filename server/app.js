@@ -1,5 +1,9 @@
 'use strict';
 
+require('dotenv').load({
+  silent: true
+});
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -16,7 +20,7 @@ app.use(function(req, res, next) {
   next();
 });
 app.use('/users', expressJwt({
-  secret: 'secret'
+  secret: process.env.SECRET
 }).unless({path: ['/users/new']}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
