@@ -7,15 +7,21 @@ const jwt = require('jsonwebtoken');
 
 function getAll(req, res, next) {
   req.models.user.find().populate('savedGames').exec(function(err, users) {
-    if (err) next(err);
-    res.json(users);
+    if (err) {
+      next(err);
+    } else {
+      res.json(users);
+    }
   });
 }
 
 function getById(req, res, next) {
   req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
-    if (err) next(err);
-    res.json(user);
+    if (err) {
+      next(err);
+    } else {
+      res.json(user);
+    }
   });
 }
 
@@ -26,10 +32,13 @@ function create(req, res, next) {
         bcryptService.hashPassword(req.body.password).then(function(hashedPassword) {
           req.body.password = hashedPassword;
           req.models.user.create(req.body, function(err, user) {
-            if (err) next(err);
-            res.json({
-              status: 'success'
-            });
+            if (err) {
+              next(err);
+            } else {
+              res.json({
+                status: 'success'
+              });
+            }
           });
         }).catch(function(err) {
           next(err);
@@ -79,7 +88,26 @@ function update(req, res, next) {
                     req.models.user.update({
                       id: req.params.id
                     }, req.body, function(err, user) {
-                      if (err) next(err);
+                      if (err) {
+                        next(err);
+                      } else {
+                        delete user.password;
+                        var token = jwt.sign(user[0], process.env.SECRET, {
+                          expiresIn: 60 * 60 * 5
+                        });
+                        res.json({
+                          token: token
+                        });
+                      }
+                    });
+                  });
+                } else {
+                  req.models.user.update({
+                    id: req.params.id
+                  }, req.body, function(err, user) {
+                    if (err) {
+                      next(err);
+                    } else {
                       delete user.password;
                       var token = jwt.sign(user[0], process.env.SECRET, {
                         expiresIn: 60 * 60 * 5
@@ -87,20 +115,7 @@ function update(req, res, next) {
                       res.json({
                         token: token
                       });
-                    });
-                  });
-                } else {
-                  req.models.user.update({
-                    id: req.params.id
-                  }, req.body, function(err, user) {
-                    if (err) next(err);
-                    delete user.password;
-                    var token = jwt.sign(user[0], process.env.SECRET, {
-                      expiresIn: 60 * 60 * 5
-                    });
-                    res.json({
-                      token: token
-                    });
+                    }
                   });
                 }
               } else {
@@ -123,10 +138,13 @@ function remove(req, res, next) {
   req.models.user.destroy({
     id: req.params.id
   }, function(err) {
-    if (err) next(err);
-    res.json({
-      status: 'success'
-    });
+    if (err) {
+      next(err);
+    } else {
+      res.json({
+        status: 'success'
+      });
+    }
   });
 }
 
@@ -141,52 +159,61 @@ function saveGame(req, res, next) {
     score: req.body.score,
     saved_game: JSON.parse(req.body.save)
   }, function(err, savedGame) {
-    if (err) next(err);
-    req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
-      if (err) next(err);
-      var isNewGameSave = true;
-      user.savedGames.forEach(function(element) {
-        if (savedGame.id === element.id) {
-          isNewGameSave = false;
-        }
-      });
-      if (isNewGameSave) {
-        user.savedGames.add(savedGame.id);
-        user.save(function(err) {
-          if (err) next(err);
-          res.status(200).json({
-            status: 'new game saved',
-            newGameId: savedGame.id
-          });
+    if (err) {
+      next(err);
+    } else {
+      req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
+        if (err) next(err);
+        var isNewGameSave = true;
+        user.savedGames.forEach(function(element) {
+          if (savedGame.id === element.id) {
+            isNewGameSave = false;
+          }
         });
-      } else {
-        req.models.saved_game.update({
-          id: req.body.saveId
-        }, {
-          saved_game: JSON.parse(req.body.save)
-        }, function() {
-          req.models.saved_game.update({
-            id: req.body.saveId,
-            score: {
-              '<': Number(req.body.score)
+        if (isNewGameSave) {
+          user.savedGames.add(savedGame.id);
+          user.save(function(err) {
+            if (err) {
+              next(err);
+            } else {
+              res.status(200).json({
+                status: 'new game saved',
+                newGameId: savedGame.id
+              });
             }
+          });
+        } else {
+          req.models.saved_game.update({
+            id: req.body.saveId
           }, {
-            score: req.body.score
+            saved_game: JSON.parse(req.body.save)
           }, function() {
-            res.status(200).json({
-              status: 'game saved'
+            req.models.saved_game.update({
+              id: req.body.saveId,
+              score: {
+                '<': Number(req.body.score)
+              }
+            }, {
+              score: req.body.score
+            }, function() {
+              res.status(200).json({
+                status: 'game saved'
+              });
             });
           });
-        });
-      }
-    });
+        }
+      });
+    }
   });
 }
 
 function getSaves(req, res, next) {
   req.models.user.findOne(req.params).populate('savedGames').exec(function(err, user) {
-    if (err) next(err);
-    res.json(user.savedGames);
+    if (err) {
+      next(err);
+    } else {
+      res.json(user.savedGames);
+    }
   });
 }
 
