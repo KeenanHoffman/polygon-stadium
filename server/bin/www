@@ -9,7 +9,7 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-var orm = require('../ORM/orm.js');
+var orm = require('../orm/orm.js');
 orm.initialize(app, app.get('port'), function(collections, connections) {
   app.models = collections;
   app.connections = connections;
