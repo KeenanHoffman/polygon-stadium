@@ -2,11 +2,11 @@
 
 angular.module('polygonStadiumApp')
   .controller('NavbarController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', navbarController])
-  .controller('LoginController', ['$scope', '$http', '$window', loginController])
-  .controller('ProfileController', ['$scope', '$http', '$window', 'userService', profileController])
-  .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', '$compile', gameController])
-  .controller('SignupController', ['$scope', '$http', '$window', signupController])
-  .controller('LeaderboardController', ['$scope', '$http', leaderboardController]);
+  .controller('LoginController', ['$scope', '$http', '$window', "apiUrl", loginController])
+  .controller('ProfileController', ['$scope', '$http', '$window', 'userService', "apiUrl", profileController])
+  .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', '$compile', "apiUrl", gameController])
+  .controller('SignupController', ['$scope', '$http', '$window', "apiUrl", signupController])
+  .controller('LeaderboardController', ['$scope', '$http', "apiUrl", leaderboardController]);
 
 function navbarController($scope, $http, $window, jwtHelper, userService) {
   $(document).ready(function() {
@@ -46,7 +46,7 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
 }
 
 
-function loginController($scope, $http, $window) {
+function loginController($scope, $http, $window, apiUrl) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
@@ -54,7 +54,7 @@ function loginController($scope, $http, $window) {
   var vm = this;
   vm.user = {};
   vm.login = function() {
-    $http.post('http://localhost:3000/auth', vm.user)
+    $http.post(apiUrl + 'auth', vm.user)
       .success(function(data /*, status, headers, config*/ ) {
         $window.sessionStorage.token = data.token;
         $window.location.href = '#/play';
@@ -74,7 +74,7 @@ function loginController($scope, $http, $window) {
   };
 }
 
-function profileController($scope, $http, $window, userService) {
+function profileController($scope, $http, $window, userService, apiUrl) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
@@ -103,7 +103,7 @@ function profileController($scope, $http, $window, userService) {
       vm.message = 'No Changes Where Submitted';
       vm.success = false;
     } else {
-      $http.put('http://localhost:3000/users/' + user.id, {
+      $http.put(apiUrl + 'users/' + user.id, {
           username: vm.updatedUser.username,
           email: vm.updatedUser.email,
           password: vm.updatedUser.password,
@@ -123,21 +123,19 @@ function profileController($scope, $http, $window, userService) {
   };
 }
 
-function gameController($scope, $http, $window, jwtHelper, userService, $compile) {
+function gameController($scope, $http, $window, jwtHelper, userService, $compile, apiUrl) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
 
-  var childScope;
-
   $scope.data = {};
   vm.saveChosen = false;
   var user = userService.getUser();
   if (user.id !== 'none') {
     $http({
-        url: 'http://localhost:3000/users/' + user.id + '/saves',
+        url: apiUrl + 'users/' + user.id + '/saves',
         method: 'GET'
       })
       .success(function(data /*, status, headers, config*/ ) {
@@ -162,7 +160,7 @@ function gameController($scope, $http, $window, jwtHelper, userService, $compile
   });
 }
 
-function signupController($scope, $http, $window) {
+function signupController($scope, $http, $window, apiUrl) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
@@ -171,7 +169,7 @@ function signupController($scope, $http, $window) {
   vm.newUser = {};
   vm.signup = function() {
     delete vm.newUser.confirmPassword;
-    $http.post('http://localhost:3000/users/new', vm.newUser)
+    $http.post(apiUrl + 'users/new', vm.newUser)
       .success(function(data /*, status, headers, config*/ ) {
         $window.location.href = '#/';
       })
@@ -185,13 +183,13 @@ function signupController($scope, $http, $window) {
   };
 }
 
-function leaderboardController($scope, $http) {
+function leaderboardController($scope, $http, apiUrl) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
-  $http.get('http://localhost:3000/leaderboard')
+  $http.get(apiUrl + 'leaderboard')
     .success(function(scores) {
       vm.leaderboard = scores;
     });

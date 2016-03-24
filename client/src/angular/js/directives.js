@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('polygonStadiumApp')
-  .directive('beginGame', ['userService', '$timeout', beginGameLogic]);
+  .directive('beginGame', ['userService', '$timeout', 'apiUrl', beginGameLogic]);
 
-function beginGameLogic(userService, $timeout) {
+function beginGameLogic(userService, $timeout, apiUrl) {
   var _userService = userService;
   var _$timeout = $timeout;
+  var _apiUrl = apiUrl;
   return {
     scope: {
       save: '=',
@@ -119,7 +120,7 @@ function beginGameLogic(userService, $timeout) {
                 if (userId !== 'none') {
                   $.ajax({
                       type: "POST",
-                      url: 'http://localhost:3000/users/' + userId + '/save-game',
+                      url: _apiUrl + 'users/' + userId + '/save-game',
                       data: {
                         saveId: gameId,
                         score: player.finalScore || player.score,

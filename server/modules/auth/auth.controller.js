@@ -10,7 +10,7 @@ function login(req, res, next) {
     .then(function(authenticatedUser) {
       if (authenticatedUser) {
         delete authenticatedUser.password;
-        var token = jwt.sign(authenticatedUser, 'secret', {
+        var token = jwt.sign(authenticatedUser, process.env.SECRET, {
           expiresIn: 60 * 60 * 5
         });
         res.json({
