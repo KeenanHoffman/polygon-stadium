@@ -224,7 +224,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           var yawObject = new THREE.Object3D();
           yawObject.position.x = 0;
           yawObject.position.y = 1.3;
-          yawObject.position.z = 28;
+          yawObject.position.z = 36;
           yawObject.add(pitchObject);
           var quat = new THREE.Quaternion();
           var moveForward = false;
@@ -408,7 +408,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             mass: mass
           });
           playerBody.addShape(playerShape); //Give our playerBody shape.
-          playerBody.position.set(0, 1.3, 28); //places the player in the middle of the scenejust above the floor
+          playerBody.position.set(0, 1.3, 36); //places the player in the middle of the scenejust above the floor
           playerBody.linearDamping = 0.9; //Must have to do with how far an object can move into another object. If raised to one the player sinks through the floor, while at 0 the player can jump extremely high.
           player.body = playerBody;
           world.addBody(player.body); //Add our playerBody to the CANNON world.
@@ -456,11 +456,13 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           light = new THREE.PointLight(0x424242, 4, 100);
           light.position.set(0, 3, -23);
           scene.add(light);
+          light = new THREE.PointLight(0x212121, 4, 100);
+          light.position.set(0, 3, 34);
+          scene.add(light);
 
           controls = new PointerLockControls(camera, player.body);
           scene.add(controls.getObject());
           var username = _userService.getUser().username;
-          // username = JSON.parse(username).username;
           if (username.length >= 10) {
             hud.playerName.innerHTML = '<h2>' + username + '</h2>';
           } else {
@@ -801,6 +803,46 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           }, {
             position: new THREE.Vector3(0, 15, 20.7),
             size: new CANNON.Vec3(7.1, 9, 4)
+          }, {
+            position: new THREE.Vector3(6, 5, 27.3),
+            size: new CANNON.Vec3(3, 5, 0.5),
+            rotation: {
+              vector: new CANNON.Vec3(0, 1, 0),
+              degree: -(Math.PI / 4)
+            }
+          }, {
+            position: new THREE.Vector3(-6, 5, 27.3),
+            size: new CANNON.Vec3(3, 5, 0.5),
+            rotation: {
+              vector: new CANNON.Vec3(0, 1, 0),
+              degree: (Math.PI / 4)
+            }
+          }, {
+            position: new THREE.Vector3(-8.3, 5, 32.8),
+            size: new CANNON.Vec3(0.5, 5, 3),
+          }, {
+            position: new THREE.Vector3(8.3, 5, 32.8),
+            size: new CANNON.Vec3(0.5, 5, 3),
+          }, {
+            position: new THREE.Vector3(-6, 5, 38.3),
+            size: new CANNON.Vec3(3, 5, 0.5),
+            rotation: {
+              vector: new CANNON.Vec3(0, 1, 0),
+              degree: -(Math.PI / 4)
+            }
+          }, {
+            position: new THREE.Vector3(6, 5, 38.3),
+            size: new CANNON.Vec3(3, 5, 0.5),
+            rotation: {
+              vector: new CANNON.Vec3(0, 1, 0),
+              degree: (Math.PI / 4)
+            }
+          }, {
+            position: new THREE.Vector3(0, 5, 40.55),
+            size: new CANNON.Vec3(3.6, 5, 0.5),
+          }, {
+            position: new THREE.Vector3(0, 10.8, 32.85),
+            size: new CANNON.Vec3(10, 1, 8),
           }];
           walls.forEach(function(wallConfig) {
             var wall = createStadiumWall(wallConfig.position, wallConfig.size, wallMaterial, wallConfig.rotation);
@@ -823,7 +865,15 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             new THREE.Vector3(6.5, 0, -17.5),
             new THREE.Vector3(-6.5, 0, -17.5),
             new THREE.Vector3(6.5, 0, 17.5),
-            new THREE.Vector3(-6.5, 0, 17.5)
+            new THREE.Vector3(-6.5, 0, 17.5),
+            new THREE.Vector3(3.8, 0, 40.8),
+            new THREE.Vector3(-3.8, 0, 40.8),
+            new THREE.Vector3(8.4, 0, 36.2),
+            new THREE.Vector3(-8.4, 0, 36.2),
+            new THREE.Vector3(8.4, 0, 29.6),
+            new THREE.Vector3(-8.4, 0, 29.6),
+            new THREE.Vector3(3.6, 0, 25.2),
+            new THREE.Vector3(-3.6, 0, 25.2),
           ];
           pillarPositions.forEach(function(position) {
             var pillar = createStadiumPillar(position, 1, 48, pillarMaterial);
