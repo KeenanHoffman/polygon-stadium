@@ -140,6 +140,9 @@ function gameController($scope, $http, $window, jwtHelper, userService, $compile
       })
       .success(function(data /*, status, headers, config*/ ) {
         vm.saves = data;
+      })
+      .error(function(data) {
+        console.log(data);
       });
   }
   vm.chooseSave = function(save, index) {
