@@ -13,7 +13,7 @@ const expressJwt = require('express-jwt');
 const routes = require('./routes');
 
 const app = express();
-
+console.log(process.env.SECRET);
 app.use(cors());
 app.use(function(req, res, next) {
   req.models = app.models;
