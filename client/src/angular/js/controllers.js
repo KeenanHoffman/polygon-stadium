@@ -80,14 +80,14 @@ function profileController($scope, $http, $window, userService, apiUrl) {
     $('.dropdown-toggle').dropdown();
   });
   var vm = this;
-  var user = userService.getUser();
+  vm.user = userService.getUser();
 
   //Use a set timeout to aviod $digest errors -
   // "...when the application's model becomes unstable and each $digest cycle triggers a state
   // change and subsequent $digest cycle. Angular detects this situation and prevents an infinite loop from
   // causing the browser to become unresponsive."
   setTimeout(function() {
-    if (user.id === 'none') {
+    if (vm.user.id === 'none') {
       $window.location.href = '#/';
     }
   }, 0);
@@ -103,7 +103,7 @@ function profileController($scope, $http, $window, userService, apiUrl) {
       vm.message = 'No Changes Where Submitted';
       vm.success = false;
     } else {
-      $http.put(apiUrl + 'users/' + user.id, {
+      $http.put(apiUrl + 'users/' + vm.user.id, {
           username: vm.updatedUser.username,
           email: vm.updatedUser.email,
           password: vm.updatedUser.password,
@@ -111,7 +111,7 @@ function profileController($scope, $http, $window, userService, apiUrl) {
         })
         .success(function(data /*, status, headers, config*/ ) {
           $window.sessionStorage.token = data.token;
-          user = userService.getUser();
+          vm.user = userService.getUser();
           vm.message = 'Your Profile Has Been Updated';
           vm.success = true;
         })

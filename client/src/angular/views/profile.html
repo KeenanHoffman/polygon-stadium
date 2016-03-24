@@ -4,7 +4,7 @@
   <form name='updatedUser' ng-submit="PC.update()" novalidate>
     <div class="col-md-3">
       <p class="right-align font-orbitron bold">Current Username:</p>
-      <p class="right-align">Koff01</p>
+      <p class="right-align">{{PC.user.username}}</p>
     </div>
     <div class="col-md-9 form-group label-floating">
       <label id="username" ng-class="{ invalid: !updatedUser.username.$valid && updatedUser.username.$touched }" class="control-label">NEW USERNAME</label>
@@ -15,7 +15,7 @@
     </div>
     <div class="col-md-3">
       <p class="right-align font-orbitron bold">Current Email:</p>
-      <p class="right-align">keenan.m.hoffman@gmail.com</p>
+      <p class="right-align">{{PC.user.email}}</p>
     </div>
     <div class="col-md-9 form-group label-floating">
       <label id="email" ng-class="{ invalid: !updatedUser.email.$valid && updatedUser.email.$touched }" class="control-label">NEW EMAIL</label>
