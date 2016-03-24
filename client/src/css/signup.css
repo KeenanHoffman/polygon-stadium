@@ -51,3 +51,15 @@
   font-family: 'Roboto', sans-serif;
   color: #212121 !important;
 }
+.message {
+  color: #FAFAFA;
+  border-radius: 10px;
+  border: 3px #212121 solid;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: absolute;
+  top: 30rem;
+  right: 2rem;
+}
