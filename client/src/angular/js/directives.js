@@ -111,7 +111,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             hud.healthBar.style.width = '100%';
             round.isOver = true;
             gate.toggle();
-            round.multiplier += round.number / 10;
             if (shouldSave) {
               startNextRound.innerHTML = 'press ENTER to begin the next round';
               //use setTimeout to allow scoring to finish
@@ -151,7 +150,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           start: function() {
             makeEnemies();
             round.number++;
-            round.multiplier += 0.1;
+            console.log(round.multiplier);
+            round.multiplier += 0.15;
+            console.log(round.multiplier);
             hud.currentRound.innerHTML = 'Round ' + round.number;
 
             context1.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -167,6 +168,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             startNextRound.innerHTML = '';
           },
           lose: function() {
+            console.log(round.multiplier);
             enemies.forEach(function(enemy) {
               world.remove(enemy.body);
               scene.remove(enemy.mesh);
@@ -174,11 +176,11 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             enemies = [];
             if (round.number % 5 === 0) {
               round.number -= 5;
+              round.multiplier = 1;
             } else {
               for (round.number; round.number % 5 !== 0; round.number--);
-
+              round.multiplier = 1 + round.number * 0.15;
             }
-            round.multiplier = 1;
             round.enemiesRemaining = 0;
             round.loss = false;
           }
@@ -203,7 +205,10 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           }
         };
         if ($scope.save !== 'new') {
+          round.multiplier = 1 + Number($scope.save.saved_game.round) * 0.15;
           round.number += Number($scope.save.saved_game.round);
+          console.log(round.multiplier);
+          console.log(round.multiplier);
           player.score = Number($scope.save.saved_game.score);
           hud.playerScore.innerHTML = player.score;
           hud.currentRound.innerHTML = 'Round ' + round.number;
@@ -603,7 +608,8 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             money: player.money,
             exp: player.exp,
             score: player.score,
-            round: round.number
+            round: round.number,
+            multiplier: round.multiplier
           };
           //Update controls with time for delta
           controls.update(Date.now() - time);
@@ -938,10 +944,10 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             enemies.push({
               body: cubeEnemy.body,
               mesh: cubeEnemy.mesh,
-              speed: 0.05 * round.multiplier,
+              speed: 0.05 * round.multiplier / 2,
               maxHealth: 3 * round.multiplier,
               health: 3 * round.multiplier,
-              damage: 1 * round.multiplier,
+              damage: 1 * round.multiplier / 4,
               isDead: false,
               move: function() {
                 switch (true) {
