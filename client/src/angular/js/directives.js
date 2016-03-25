@@ -97,6 +97,10 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             player.score = 0;
             hud.playerScore.innerHTML = player.score;
             round.loss = true;
+            document.querySelector('.game-over').style.display = 'block';
+            setTimeout(function() {
+              document.querySelector('.game-over').style.display = 'none';
+            }, 5000);
           }
         };
         var shouldSave = false;

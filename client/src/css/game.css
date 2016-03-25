@@ -112,7 +112,7 @@ body {
 #score {}
 #next-round {
   position: absolute;
-  left: 30%;
+  left: 26%;
   top: 40%;
   z-index: 2;
   display: block;
@@ -165,4 +165,13 @@ body {
   border-radius: 12rem;
   border: 3px #212121 solid;
   background-color: #B71C1C;
+}
+.game-over {
+  display: none;
+  font-size: 10rem;
+  position: absolute;
+  left: 26%;
+  top: 30%;
+  z-index: 2;
+  color: rgba(183, 28, 28, 0.7);
 }
