@@ -27,7 +27,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             controls.enabled = true;
             instructions.style.display = 'none';
             document.querySelector('.navbar').style.display = 'none';
-            if(startNextRound) {
+            if (startNextRound) {
               startNextRound.style.display = 'block';
             }
           } else {
@@ -133,11 +133,23 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                         Authorization: 'Bearer ' + window.sessionStorage.token
                       }
                     })
-                    .done(function(data) { //add a popup letting the user know the game has been saved.
+                    .done(function(data) {
+                      document.querySelector('.alert').innerHTML = '<h4>Your game hase been saved!</h4>';
+                      document.querySelector('.alert').style.display = 'block';
+                      setTimeout(function() {
+                        document.querySelector('.alert').style.display = 'none';
+                      }, 5000);
                       if (data.newGameId) {
                         gameId = data.newGameId;
                       }
                       player.finalScore = undefined;
+                    })
+                    .fail(function() {
+                      document.querySelector('.alert-error').innerHTML = '<h4>Something Went Wrong!</h4>';
+                      document.querySelector('.alert-error').style.display = 'block';
+                      setTimeout(function() {
+                        document.querySelector('.alert-error').style.display = 'none';
+                      }, 5000);
                     });
                 }
               }, 0);

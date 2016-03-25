@@ -12,6 +12,9 @@
       </div>
     </div>
   </div>
+  <div ng-class="{hidden: GC.saves.length > 4}" class="material-low material-hover new-game col-md-offset-5 col-md-2">
+    <h2 ng-click="GC.chooseSave('new')">NEW GAME</h2>
+  </div>
   <div class="col-md-offset-8 how-to-play">
     <h1 class="center">How To Play</h1>
     <h3>Objectives:</h3>
@@ -30,9 +33,6 @@
     <p>- Enemy difficulty increases as you progress through rounds.</p>
     <p>- Click both left and right to increase firing speed.</p>
     <p>- Hugging the wall makes it difficult for enemies to surprise you.</p>
-  </div>
-  <div ng-class="{hidden: GC.saves.length > 4}" class="material-low material-hover new-game col-md-offset-5 col-md-2">
-    <h2 ng-click="GC.chooseSave('new')">NEW GAME</h2>
   </div>
 </div>
 
@@ -67,6 +67,7 @@
   </div>
   <div class="game-placeholder">
     <div id="game"></div>
+    <div class="alert"></div>
     <begin-game save="save" number={{GC.saveId}}></begin-game>
   </div>
 </div>
