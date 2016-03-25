@@ -11,5 +11,6 @@ router.put('/:id', userController.update);
 router.delete('/:id', userController.remove);
 router.post('/:id/save-game', userController.saveGame);
 router.get('/:id/saves', userController.getSaves);
+router.delete('/delete-game/:id', userController.removeSave);
 
 module.exports = router;

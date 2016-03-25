@@ -127,3 +127,10 @@ body {
 .health-bar-blue {
   background: linear-gradient(to top, #2196F3, #1565C0) !important;
 }
+.delete-save {
+  color: #FAFAFA;
+  border-radius: 12rem;
+  border: 3px #212121 solid;
+  text-align: center;
+  background-color: #B71C1C;
+}

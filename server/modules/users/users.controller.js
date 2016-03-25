@@ -217,6 +217,18 @@ function getSaves(req, res, next) {
   });
 }
 
+function removeSave(req, res, next) {
+  req.models.saved_game.destroy(req.params, function(err) {
+    if (err) {
+      next(err);
+    } else {
+      res.json({
+        status: 'success'
+      });
+    }
+  });
+}
+
 module.exports = {
   getAll,
   create,
@@ -224,5 +236,6 @@ module.exports = {
   update,
   remove,
   saveGame,
-  getSaves
+  getSaves,
+  removeSave
 };

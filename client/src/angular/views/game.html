@@ -1,10 +1,17 @@
 <link rel="stylesheet" href="/css/game.css">
 <div class="below-nav" ng-if="!GC.saveChosen">
   <div ng-if="!GC.saveChosen" ng-repeat="save in GC.saves track by $index">
-    <div class="material-low material-hover save col-md-offset-4 col-md-4" ng-click="GC.chooseSave(save, $index)">
+    <div ng-mouseleave="hover = false" ng-mouseover="hover = true" class="material-low material-hover save col-md-offset-4 col-md-4" ng-click="GC.chooseSave(save, $index)">
       <h1>ROUND: {{save.saved_game.round}}</h1>
-      <h4>SCORE: {{save.saved_game.score}}</h4>
-      <p>Last played: {{save.updatedAt | date:'MM/dd'}}</p>
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <p>Last played: {{save.updatedAt | date:'MM/dd'}}</p>
+          <h4>SCORE: {{save.saved_game.score}}</h4>
+        </div>
+        <div ng-click="GC.deleteGame(save, $index, $event)" ng-if="hover" class="col-md-2 material-hover delete-save">
+          <h5>Delete Game</h5>
+        </div>
+      </div>
     </div>
   </div>
   <div ng-class="{hidden: GC.saves.length > 4}" class="material-low material-hover new-game col-md-offset-5 col-md-2">

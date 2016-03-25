@@ -161,6 +161,15 @@ function gameController($scope, $http, $window, jwtHelper, userService, $compile
     $(document).off();
     $('.game-placeholder').empty();
   });
+  vm.deleteGame = function(save, index, $event) {
+    $event.stopPropagation();
+    var shouldDelete = $window.confirm('Deleting a game will remove it from the leaderboard\nAre you sure you would like to delete this game?');
+    if(shouldDelete) {
+      $http.get(apiUrl + 'users/delete-game/' + save.id).success(function() {
+        vm.saves.splice(index, 1);
+      });
+    }
+  };
 }
 
 function signupController($scope, $http, $window, apiUrl) {
