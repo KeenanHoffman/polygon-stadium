@@ -27,9 +27,13 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             controls.enabled = true;
             instructions.style.display = 'none';
             document.querySelector('.navbar').style.display = 'none';
+            if(startNextRound) {
+              startNextRound.style.display = 'block';
+            }
           } else {
             controls.enabled = false;
-            instructions.style.display = 'block';
+            instructions.style.display = 'flex';
+            startNextRound.style.display = 'none';
             document.querySelector('.navbar').style.display = 'inline';
           }
         };
@@ -150,9 +154,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           start: function() {
             makeEnemies();
             round.number++;
-            console.log(round.multiplier);
             round.multiplier += 0.15;
-            console.log(round.multiplier);
             hud.currentRound.innerHTML = 'Round ' + round.number;
 
             context1.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -168,7 +170,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             startNextRound.innerHTML = '';
           },
           lose: function() {
-            console.log(round.multiplier);
             enemies.forEach(function(enemy) {
               world.remove(enemy.body);
               scene.remove(enemy.mesh);
@@ -207,8 +208,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
         if ($scope.save !== 'new') {
           round.multiplier = 1 + Number($scope.save.saved_game.round) * 0.15;
           round.number += Number($scope.save.saved_game.round);
-          console.log(round.multiplier);
-          console.log(round.multiplier);
           player.score = Number($scope.save.saved_game.score);
           hud.playerScore.innerHTML = player.score;
           hud.currentRound.innerHTML = 'Round ' + round.number;

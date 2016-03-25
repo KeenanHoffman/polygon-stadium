@@ -2,17 +2,34 @@
 <div class="below-nav" ng-if="!GC.saveChosen">
   <div ng-if="!GC.saveChosen" ng-repeat="save in GC.saves track by $index">
     <div ng-mouseleave="hover = false" ng-mouseover="hover = true" class="material-low material-hover save col-md-offset-4 col-md-4" ng-click="GC.chooseSave(save, $index)">
-      <h1>ROUND: {{save.saved_game.round}}</h1>
-      <div class="row">
-        <div class="col-md-offset-2 col-md-8">
-          <p>Last played: {{save.updatedAt | date:'MM/dd'}}</p>
-          <h4>SCORE: {{save.saved_game.score}}</h4>
-        </div>
-        <div ng-click="GC.deleteGame(save, $index, $event)" ng-if="hover" class="col-md-2 material-hover delete-save">
-          <h5>Delete Game</h5>
-        </div>
+      <h1 class="round">ROUND: {{save.saved_game.round}}</h1>
+      <div class="col-md-offset-2 col-md-8">
+        <h4>HIGH SCORE: {{save.score}}</h4>
+        <p>Last played: {{save.updatedAt | date:'MM/dd'}}</p>
+      </div>
+      <div ng-click="GC.deleteGame(save, $index, $event)" ng-if="hover" class="col-md-2 material-hover delete-save">
+        <h5>Delete Game</h5>
       </div>
     </div>
+  </div>
+  <div class="col-md-offset-8 how-to-play">
+    <h1 class="center">How To Play</h1>
+    <h3>Objectives:</h3>
+    <p>- Destroy enemies by shooting.</p>
+    <p>- Complete rounds by destroying all enemies.</p>
+    <p>- Compete for the top scores.</p>
+    <p>- Compete to reach the highest rounds.</p>
+    <h3>Movement:</h3>
+    <p>- W A S D Moves</p>
+    <p>- SPACE Jumps</p>
+    <p>- MOUSE Looks</p>
+    <p>- CLICKING Shoots</p>
+    <h3>Tips:</h3>
+    <p>- Your game is saved after each round and after you lose...</p>
+    <p>- Once you beat rounds that are multiples of 5 you can start from those rounds if you lose.</p>
+    <p>- Enemy difficulty increases as you progress through rounds.</p>
+    <p>- Click both left and right to increase firing speed.</p>
+    <p>- Hugging the wall makes it difficult for enemies to surprise you.</p>
   </div>
   <div ng-class="{hidden: GC.saves.length > 4}" class="material-low material-hover new-game col-md-offset-5 col-md-2">
     <h2 ng-click="GC.chooseSave('new')">NEW GAME</h2>
@@ -21,8 +38,13 @@
 
 <div ng-if="GC.saveChosen">
   <div id="instructions">
-    <h3>Click to play</h3>
-    <p>(W,A,S,D = Move, SPACE = Jump, MOUSE = Look, CLICK = Shoot)</p>
+    <div class="center">
+      <h1>Click to play</h1>
+      <h4>W A S D to Move
+        <br/>SPACE = Jump
+        <br/>MOUSE = Look
+        <br/>CLICK = Shoot</h4>
+    </div>
   </div>
   <div id="hud">
     <img src="../../images/hud.png" class="stretch-across" alt="..." />

@@ -140,10 +140,10 @@ function gameController($scope, $http, $window, jwtHelper, userService, $compile
       })
       .success(function(data /*, status, headers, config*/ ) {
         vm.saves = data;
-      })
-      .error(function(data) {
-        console.log(data);
       });
+      // .error(function(data) {
+      //   console.log(data);
+      // });
   }
   vm.chooseSave = function(save, index) {
     if (save === 'new') {
@@ -163,9 +163,9 @@ function gameController($scope, $http, $window, jwtHelper, userService, $compile
   });
   vm.deleteGame = function(save, index, $event) {
     $event.stopPropagation();
-    var shouldDelete = $window.confirm('Deleting a game will remove it from the leaderboard\nAre you sure you would like to delete this game?');
+    var shouldDelete = $window.confirm('Deleting a game will remove it from the leaderboard.\nAre you sure you would like to delete this game?');
     if(shouldDelete) {
-      $http.get(apiUrl + 'users/delete-game/' + save.id).success(function() {
+      $http.delete(apiUrl + 'users/delete-game/' + save.id).success(function() {
         vm.saves.splice(index, 1);
       });
     }
