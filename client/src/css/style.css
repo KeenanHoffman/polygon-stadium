@@ -1,7 +1,6 @@
 body {
   background: url(../images/space.png) center center no-repeat;
-  background-size: cover;
-  min-height: 100vh; }
+  background-size: cover; }
   body h1, body h2, body h3 {
     font-family: 'Orbitron', sans-serif; }
 

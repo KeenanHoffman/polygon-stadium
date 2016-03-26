@@ -47,12 +47,6 @@
   background-color: #4A148C !important;
   color: #FAFAFA !important;
 }
-.logo2 {
-  position: fixed;
-  top: 34rem;
-  left: 3%;
-  width: 50rem;
-}
 .message {
   color: #FAFAFA;
   border-radius: 10px;
@@ -64,4 +58,14 @@
   position: absolute;
   top: 8rem;
   right: 2rem;
+}
+.logo-wrapper {
+  position: relative;
+}
+.logo2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-135%, 50%);
+  width: 50rem;
 }

@@ -97,7 +97,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             player.score = 0;
             hud.playerScore.innerHTML = player.score;
             round.loss = true;
-            document.querySelector('.game-over').style.display = 'block';
+            document.querySelector('.game-over').style.display = 'inline-block';
             setTimeout(function() {
               document.querySelector('.game-over').style.display = 'none';
             }, 5000);
@@ -492,7 +492,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           startNextRound = document.createElement('h1');
           startNextRound.innerHTML = '';
           startNextRound.id = 'next-round';
-          document.querySelector('#game').appendChild(startNextRound);
+          document.querySelector('#messages').appendChild(startNextRound);
 
           ///////////////////////////////////////////////////////
           //Begin Text Example
