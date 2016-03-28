@@ -202,7 +202,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               scene.remove(enemy.mesh);
             });
             if (snakeBody) {
-              console.log('in here');
               world.remove(snakeBody);
               scene.remove(snakeMesh);
               snakePieces.forEach(function(piece) {
