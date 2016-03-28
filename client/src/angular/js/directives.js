@@ -991,13 +991,12 @@ function beginGameLogic(userService, $timeout, apiUrl) {
 
         function createSnake() {
           var snakeMaterial = new THREE.MeshLambertMaterial({
-            color: 0xC2185B,
-            opacity: 0.6,
+            color: 0x2196F3,
             transparent: true
           });
           var snakeShape = new CANNON.Sphere(1);
           snakeBody = new CANNON.Body({
-            mass: 20
+            mass: 100
           });
           var snakeGeometry = new THREE.SphereGeometry(1);
           snakeMesh = new THREE.Mesh(snakeGeometry, snakeMaterial);
@@ -1005,28 +1004,45 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           snakeBody.addShape(snakeShape);
           world.addBody(snakeBody);
           snakeBody.isSnake = true;
-          snakeBody.health = 5;
+          snakeBody.health = 5 * round.multiplier;
           snakeBody.position.set(0, 1.6, 0);
           snakeMesh.position.set(0, 1.6, 0);
           snakeBody.damage = round.multiplier / 20;
           snakeBody.isDead = false;
           snakeBody.addEventListener("collide", function(event) {
             if (event.body.projectileId >= 0) {
-              snakeBody.health--;
+              snakeBody.health -= player.damage;
               player.score += Math.round(500 * round.multiplier);
               if (snakeBody.health < 1) {
                 snakeBody.isDead = true;
               }
             }
           });
-
+          var snakePieceMaterials = [
+            new THREE.MeshLambertMaterial({
+              color: 0xF44336,
+              transparent: true
+            }),
+            new THREE.MeshLambertMaterial({
+              color: 0xFFEB3B,
+              transparent: true
+            }),
+            new THREE.MeshLambertMaterial({
+              color: 0x673AB7,
+              transparent: true
+            }),
+            new THREE.MeshLambertMaterial({
+              color: 0x00E676,
+              transparent: true
+            })
+          ];
           for (var i = 0; i < 4; i++) {
             var snakePieceShape = new CANNON.Sphere(0.5);
             var snakePieceBody = new CANNON.Body({
               mass: 1
             });
             var snakePieceGeometry = new THREE.SphereGeometry(0.5);
-            var snakePieceMesh = new THREE.Mesh(snakePieceGeometry, snakeMaterial);
+            var snakePieceMesh = new THREE.Mesh(snakePieceGeometry, snakePieceMaterials[i]);
             scene.add(snakePieceMesh);
             snakePieceBody.addShape(snakePieceShape);
             world.addBody(snakePieceBody);
