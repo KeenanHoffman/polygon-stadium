@@ -15,6 +15,15 @@ function beginGameLogic(userService, $timeout, apiUrl) {
     link: function($scope /*, $elem, $attr*/ ) {
       var killAll = false;
       var timer = _$timeout(function() {
+
+        var snakeBody;
+        var snakeMesh;
+        var snakePieceBody;
+        var snakePieceMesh;
+        var snakePieces = [];
+        var constraints = [];
+        var tween;
+
         var gameId = $scope.save.id;
         var element = document.body;
         var instructions = document.querySelector('#instructions');
@@ -111,8 +120,10 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           willStart: true,
           isOver: false,
           loss: false,
+          hadSnake: false,
           end: function() {
             enemies = [];
+            round.hadSnake = false;
             player.health = player.maxHealth;
             hud.lifeCounter.innerHTML = '100%';
             hud.healthBar.className = 'progress-bar health-bar-blue';
@@ -190,6 +201,23 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               world.remove(enemy.body);
               scene.remove(enemy.mesh);
             });
+            if (snakeBody) {
+              console.log('in here');
+              world.remove(snakeBody);
+              scene.remove(snakeMesh);
+              snakePieces.forEach(function(piece) {
+                world.remove(piece.body);
+                scene.remove(piece.mesh);
+              });
+              constraints.forEach(function(constraint) {
+                world.removeConstraint(constraint);
+              });
+              TWEEN.remove(tween);
+              snakePieces = [];
+              constraints = [];
+              snakeBody = undefined;
+              snakeMesh = undefined;
+            }
             enemies = [];
             if (round.number % 5 === 0) {
               round.number -= 5;
@@ -560,6 +588,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           if (controls.enabled) {
             count++;
             world.step(dt); //Update world dt(1/60)th of a second
+            TWEEN.update();
             // Update ball positions
             for (var i = 0; i < projectiles.length; i++) {
               //Update ballMeshes(view) position to equal the ballBody(physics)
@@ -582,6 +611,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               environmentObject.mesh.quaternion.copy(environmentObject.body.quaternion);
             });
             round.enemiesRemaining = 0;
+
             for (var k = 0; k < enemies.length; k++) {
               if (!enemies[k].direction || count % 60 === 0) {
                 enemies[k].direction = Math.random();
@@ -602,8 +632,66 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                 round.enemiesRemaining++;
               }
             }
+            if (round.enemiesRemaining === 4 && !snakeBody && !round.hadSnake) {
+              createSnake();
+              round.enemiesRemaining++;
+            }
+            if (snakeBody) {
+              if (snakeBody.isDead) {
+                world.remove(snakeBody);
+                scene.remove(snakeMesh);
+                //snakeBody = undefined;
+                snakePieces.forEach(function(piece) {
+                  world.remove(piece.body);
+                  scene.remove(piece.mesh);
+                });
+                constraints.forEach(function(constraint) {
+                  world.removeConstraint(constraint);
+                });
+                snakePieces = [];
+                snakeBody = undefined;
+                snakeMesh = undefined;
+                TWEEN.remove(tween);
+                round.hadSnake = true;
+              } else {
+                snakeMesh.position.copy(snakeBody.position);
+                snakePieces.forEach(function(piece) {
+                  piece.mesh.position.copy(piece.body.position);
+                });
+                if (snakeMesh.position.distanceTo(new THREE.Vector3(controls.getObject().position.x, controls.getObject().position.y, controls.getObject().position.z)) <= 2.5) {
+                  player.health -= snakeBody.damage;
+                  var healthPercentage = Math.round(player.health / player.maxHealth * 100);
+                  if (healthPercentage <= 0) {
+                    player.die();
+                    hud.lifeCounter.innerHTML = '100%';
+                  } else {
+                    hud.healthBar.style.width = healthPercentage + '%';
+                    hud.lifeCounter.innerHTML = healthPercentage + '%';
+                    switch (true) {
+                      case (healthPercentage < 21):
+                        hud.healthBar.className = 'progress-bar health-bar-red';
+                        break;
+                      case (healthPercentage < 41):
+                        hud.healthBar.className = 'progress-bar health-bar-orange';
+                        break;
+                      case (healthPercentage < 61):
+                        hud.healthBar.className = 'progress-bar health-bar-yellow';
+                        break;
+                      case (healthPercentage < 81):
+                        hud.healthBar.className = 'progress-bar health-bar-green';
+                        break;
+                      case (healthPercentage < 100):
+                        hud.healthBar.className = 'progress-bar health-bar-blue';
+                        break;
+                    }
+                  }
+                }
+                round.enemiesRemaining++;
+              }
+            }
+
             hud.enemiesRemaining.innerHTML = 'Enemies Remaining ' + round.enemiesRemaining;
-            if (!round.enemiesRemaining && !round.isOver) {
+            if (!round.enemiesRemaining && !round.isOver && !snakeBody) {
               round.end();
             }
             if (round.willStart && player.body.position.z < 15) {
@@ -902,6 +990,80 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           });
         }
 
+        function createSnake() {
+          var snakeMaterial = new THREE.MeshLambertMaterial({
+            color: 0xC2185B,
+            opacity: 0.6,
+            transparent: true
+          });
+          var snakeShape = new CANNON.Sphere(1);
+          snakeBody = new CANNON.Body({
+            mass: 20
+          });
+          var snakeGeometry = new THREE.SphereGeometry(1);
+          snakeMesh = new THREE.Mesh(snakeGeometry, snakeMaterial);
+          scene.add(snakeMesh);
+          snakeBody.addShape(snakeShape);
+          world.addBody(snakeBody);
+          snakeBody.isSnake = true;
+          snakeBody.health = 5;
+          snakeBody.position.set(0, 1.6, 0);
+          snakeMesh.position.set(0, 1.6, 0);
+          snakeBody.damage = round.multiplier / 20;
+          snakeBody.isDead = false;
+          snakeBody.addEventListener("collide", function(event) {
+            if (event.body.projectileId >= 0) {
+              snakeBody.health--;
+              player.score += Math.round(500 * round.multiplier);
+              if (snakeBody.health < 1) {
+                snakeBody.isDead = true;
+              }
+            }
+          });
+
+          for (var i = 0; i < 4; i++) {
+            var snakePieceShape = new CANNON.Sphere(0.5);
+            var snakePieceBody = new CANNON.Body({
+              mass: 1
+            });
+            var snakePieceGeometry = new THREE.SphereGeometry(0.5);
+            var snakePieceMesh = new THREE.Mesh(snakePieceGeometry, snakeMaterial);
+            scene.add(snakePieceMesh);
+            snakePieceBody.addShape(snakePieceShape);
+            world.addBody(snakePieceBody);
+            snakePieceBody.position.set(0, 1.1, 2);
+            snakePieceMesh.position.set(0, 1.1, 2);
+            snakePieces.push({
+              body: snakePieceBody,
+              mesh: snakePieceMesh
+            });
+            var constraint;
+            if (i === 0) {
+              constraint = new CANNON.PointToPointConstraint(snakeBody, new CANNON.Vec3(-1, 1 + 1 * 0.1, 0), snakePieceBody, new CANNON.Vec3(-0.5, -0.5 - 0.1 * 0.5, 0));
+            } else {
+              constraint = new CANNON.PointToPointConstraint(snakePieces[i - 1].body, new CANNON.Vec3(-0.5, 0.5 + 0.5 * 0.1, 0), snakePieceBody, new CANNON.Vec3(-0.5, -0.5 - 0.1 * 0.5, 0));
+            }
+            world.addConstraint(constraint);
+            constraints.push(constraint);
+          }
+          var path = new THREE.SplineCurve3([
+            snakeBody.position,
+            controls.getObject().position
+          ]);
+          tween = new TWEEN.Tween({
+              distance: 0
+            })
+            .to({
+              distance: 0.02 * round.multiplier * 0.75
+            }, 10000) // destination, duration
+            .onUpdate(function() {
+              var pathPosition = path.getPointAt(this.distance);
+              snakeBody.position.set(pathPosition.x, pathPosition.y, pathPosition.z);
+            })
+            .start();
+          tween.repeat(Infinity);
+        }
+
         function makeEnemies() {
           function createCubeEnemy(vector, size, material, id) {
             //Make Cannon Body
@@ -936,7 +1098,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               mesh: cubeMesh
             };
           }
-
           var cubeMaterial = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
             color: 0xC2185B,
             opacity: 0.6,
