@@ -172,8 +172,16 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             shouldSave = true;
             window.addEventListener('keydown', function(e) {
               if (controls.enabled) {
-                if (e.keyCode === 13 && !round.enemiesRemaining && player.body.position.z < 15) {
-                  round.willStart = true;
+                if (e.keyCode === 13 && !round.enemiesRemaining) {
+                  if (player.body.position.z > 15) {
+                    document.querySelector('.alert-error').innerHTML = '<h4>Please move further into the arena.</h4>';
+                    document.querySelector('.alert-error').style.display = 'block';
+                    setTimeout(function() {
+                      document.querySelector('.alert-error').style.display = 'none';
+                    }, 2000);
+                  } else {
+                    round.willStart = true;
+                  }
                 }
               }
             });
@@ -780,6 +788,13 @@ function beginGameLogic(userService, $timeout, apiUrl) {
         });
 
         function makeStadium() {
+          var roofBody = new CANNON.Body({ //Set up Cannon body for physics calculation
+            mass: 10000
+          });
+          var roofShape = new CANNON.Box(new CANNON.Vec3(50, 0.5, 50));
+          roofBody.addShape(roofShape);
+          roofBody.position.set(0, 24, 0);
+          world.add(roofBody);
           function createStadiumWall(vector, halfExtents, material, rotation) {
             //Make Cannon Body
             var wallBody = new CANNON.Body({ //Set up Cannon body for physics calculation

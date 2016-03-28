@@ -37,6 +37,7 @@ body {
   border: none;
 }
 .how-to-play {
+  padding: 3rem;
   color: #212121;
   border-radius: 10px;
   border: 3px #212121 solid;
