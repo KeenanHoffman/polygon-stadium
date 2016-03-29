@@ -15,15 +15,11 @@ function beginGameLogic(userService, $timeout, apiUrl) {
     link: function($scope /*, $elem, $attr*/ ) {
       var killAll = false;
       var timer = _$timeout(function() {
-
         var snakeBody;
         var snakeMesh;
-        var snakePieceBody;
-        var snakePieceMesh;
         var snakePieces = [];
         var constraints = [];
         var tween;
-
         var gameId = $scope.save.id;
         var element = document.body;
         var instructions = document.querySelector('#instructions');
@@ -31,26 +27,33 @@ function beginGameLogic(userService, $timeout, apiUrl) {
         var context1;
         var canvas1;
         var mesh1;
-        var pointerlockchange = function() {
-          if (document.pointerLockElement === element) {
-            controls.enabled = true;
-            instructions.style.display = 'none';
-            document.querySelector('.navbar').style.display = 'none';
-            if (startNextRound) {
-              startNextRound.style.display = 'block';
+        var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+        if(havePointerLock) {
+          var pointerlockchange = function() {
+            if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+              controls.enabled = true;
+              instructions.style.display = 'none';
+              document.querySelector('.navbar').style.display = 'none';
+              if (startNextRound) {
+                startNextRound.style.display = 'block';
+              }
+            } else {
+              controls.enabled = false;
+              instructions.style.display = 'flex';
+              startNextRound.style.display = 'none';
+              document.querySelector('.navbar').style.display = 'inline';
             }
-          } else {
-            controls.enabled = false;
-            instructions.style.display = 'flex';
-            startNextRound.style.display = 'none';
-            document.querySelector('.navbar').style.display = 'inline';
-          }
-        };
-        document.addEventListener('pointerlockchange', pointerlockchange, false);
-        instructions.addEventListener('click', function() {
-          instructions.style.display = 'none';
-          element.requestPointerLock();
-        });
+          };
+          document.addEventListener('pointerlockchange', pointerlockchange, false);
+          instructions.addEventListener('click', function() {
+            instructions.style.display = 'none';
+            element.requestPointerLock();
+          });
+        } else {
+          instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Chrome or Firefox';
+        }
+
+
         var hud = {
           healthBar: document.querySelector('#health'),
           playerName: document.querySelector('#player-name'),
