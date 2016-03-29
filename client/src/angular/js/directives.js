@@ -15,6 +15,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
     link: function($scope /*, $elem, $attr*/ ) {
       var killAll = false;
       var timer = _$timeout(function() {
+        document.querySelector('.music').volume = 0.2;
         var snakeBody;
         var snakeMesh;
         var snakePieces = [];
@@ -27,6 +28,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
         var context1;
         var canvas1;
         var mesh1;
+        var success = true;
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
         if (havePointerLock) {
 
@@ -45,9 +47,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               document.querySelector('.navbar').style.display = 'inline';
             }
           };
-          document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-          document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-          document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+          document.addEventListener('pointerlockchange', pointerlockchange, false);
+          document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+          document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
           instructions.addEventListener('click', function() {
             instructions.style.display = 'none';
             // element.requestPointerLock();
@@ -116,6 +118,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           items: [], //not yet used
           takeDamage: function(enemy) {
             this.health -= enemy.damage;
+            var audio = new Audio('../sounds/take_damage.wav');
+            audio.volume = 0.3;
+            audio.play();
           },
           die: function() {
             hud.lifeCounter.innerHTML = '100%';
@@ -127,6 +132,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             player.score = 0;
             hud.playerScore.innerHTML = player.score;
             round.loss = true;
+            success = false;
             document.querySelector('.game-over').style.display = 'inline-block';
             setTimeout(function() {
               document.querySelector('.game-over').style.display = 'none';
@@ -189,6 +195,16 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                     });
                 }
               }, 0);
+              if (success) {
+                var win = new Audio('../sounds/win.wav');
+                win.volume = 0.5;
+                win.play();
+              } else {
+                var lose = new Audio('../sounds/lose.wav');
+                lose.volume = 0.5;
+                lose.play();
+              }
+              success = true;
             }
             shouldSave = true;
             window.addEventListener('keydown', function(e) {
@@ -550,9 +566,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           startNextRound.id = 'next-round';
           document.getElementById('messages').appendChild(startNextRound);
 
-          ///////////////////////////////////////////////////////
-          //Begin Text Example
-          ///////////////////////////////////////////////////////
+          // adds floating round number
           canvas1 = document.createElement('canvas');
           context1 = canvas1.getContext('2d');
           context1.font = "Bold 40px Arial";
@@ -576,9 +590,6 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           );
           mesh1.position.set(0, 10, 0);
           scene.add(mesh1);
-          ///////////////////////////////////////////////////////
-          //End Text Example
-          ///////////////////////////////////////////////////////
 
           // floor
           var floorGeometry = new THREE.PlaneGeometry(300, 300, 50, 50);
@@ -681,6 +692,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                 snakeMesh = undefined;
                 TWEEN.remove(tween);
                 round.hadSnake = true;
+                var audio = new Audio('../sounds/snake_die.mp3');
+                audio.volume = 0.6;
+                audio.play();
               } else {
                 snakeMesh.position.copy(snakeBody.position);
                 snakePieces.forEach(function(piece) {
@@ -688,6 +702,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                 });
                 if (snakeMesh.position.distanceTo(new THREE.Vector3(controls.getObject().position.x, controls.getObject().position.y, controls.getObject().position.z)) <= 2.5) {
                   player.health -= snakeBody.damage;
+                  var damage = new Audio('../sounds/take_damage_snake.wav');
+                  damage.volume = 0.4;
+                  damage.play();
                   var healthPercentage = Math.round(player.health / player.maxHealth * 100);
                   if (healthPercentage <= 0) {
                     player.die();
@@ -1203,6 +1220,9 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                 this.isDead = true;
                 scene.remove(this.mesh);
                 world.remove(this.body);
+                var audio = new Audio('../sounds/enemy_die.wav');
+                audio.volume = 0.3;
+                audio.play();
               }
             });
           });

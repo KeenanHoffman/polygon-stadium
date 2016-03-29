@@ -12,7 +12,7 @@ var runSequence = require('run-sequence');
 var watch = require('gulp-watch');
 
 gulp.task('default', function() {
-  runSequence(['build:html', 'build:css', 'build:images', 'build:lib', 'build:bower', 'build:angular', 'build:views']);
+  runSequence(['build:html', 'build:css', 'build:images', 'build:lib', 'build:bower', 'build:angular', 'build:views', 'build:sounds']);
 });
 
 gulp.task('build:html', function() {
@@ -65,4 +65,9 @@ gulp.task('build:views', function() {
   return gulp.src('src/angular/views/*')
     .pipe(watch('src/angular/views/*'))
     .pipe(gulp.dest('dist/views'));
+});
+gulp.task('build:sounds', function() {
+  return gulp.src('src/sounds/*')
+    .pipe(watch('src/sounds/*'))
+    .pipe(gulp.dest('dist/sounds'));
 });
