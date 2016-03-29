@@ -22,13 +22,14 @@ function beginGameLogic(userService, $timeout, apiUrl) {
         var tween;
         var gameId = $scope.save.id;
         var element = document.body;
-        var instructions = document.querySelector('#instructions');
+        var instructions = document.getElementById('instructions');
         var startNextRound;
         var context1;
         var canvas1;
         var mesh1;
         var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
-        if(havePointerLock) {
+        if (havePointerLock) {
+
           var pointerlockchange = function() {
             if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
               controls.enabled = true;
@@ -44,23 +45,40 @@ function beginGameLogic(userService, $timeout, apiUrl) {
               document.querySelector('.navbar').style.display = 'inline';
             }
           };
-          document.addEventListener('pointerlockchange', pointerlockchange, false);
+          document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+          document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+          document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
           instructions.addEventListener('click', function() {
             instructions.style.display = 'none';
-            element.requestPointerLock();
+            // element.requestPointerLock();
+            element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+            if (/Firefox/i.test(navigator.userAgent)) {
+              var fullscreenchange = function() {
+                if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+                  document.removeEventListener('fullscreenchange', fullscreenchange);
+                  document.removeEventListener('mozfullscreenchange', fullscreenchange);
+                  element.requestPointerLock();
+                }
+              };
+              document.addEventListener('fullscreenchange', fullscreenchange, false);
+              document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+              element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+              element.requestFullscreen();
+            } else {
+              element.requestPointerLock();
+            }
           });
         } else {
           instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Chrome or Firefox';
         }
 
-
         var hud = {
-          healthBar: document.querySelector('#health'),
-          playerName: document.querySelector('#player-name'),
-          playerScore: document.querySelector('#score'),
-          currentRound: document.querySelector('#round'),
-          enemiesRemaining: document.querySelector('#enemies-remaining'),
-          lifeCounter: document.querySelector('#life-counter')
+          healthBar: document.getElementById('health'),
+          playerName: document.getElementById('player-name'),
+          playerScore: document.getElementById('score'),
+          currentRound: document.getElementById('round'),
+          enemiesRemaining: document.getElementById('enemies-remaining'),
+          lifeCounter: document.getElementById('life-counter')
         };
         var red = new THREE.MeshLambertMaterial({ //Simple Three material for boxes
           color: 0xD50000,
@@ -530,7 +548,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           startNextRound = document.createElement('h1');
           startNextRound.innerHTML = '';
           startNextRound.id = 'next-round';
-          document.querySelector('#messages').appendChild(startNextRound);
+          document.getElementById('messages').appendChild(startNextRound);
 
           ///////////////////////////////////////////////////////
           //Begin Text Example
@@ -574,13 +592,13 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           //renderer
           renderer = new THREE.WebGLRenderer();
           renderer.setSize(window.innerWidth, window.innerHeight);
-          document.querySelector('#game').appendChild(renderer.domElement);
+          document.getElementById('game').appendChild(renderer.domElement);
 
           //Window resize handler
           window.addEventListener('resize', onWindowResize, false);
 
           function onWindowResize() {
-            document.querySelector('#hud').style.width = $(window).width() + 'px';
+            document.getElementById('hud').style.width = $(window).width() + 'px';
             document.querySelector('.stretch-across').style.width = $(window).width() + 'px';
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -798,6 +816,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
           roofBody.addShape(roofShape);
           roofBody.position.set(0, 24, 0);
           world.add(roofBody);
+
           function createStadiumWall(vector, halfExtents, material, rotation) {
             //Make Cannon Body
             var wallBody = new CANNON.Body({ //Set up Cannon body for physics calculation
