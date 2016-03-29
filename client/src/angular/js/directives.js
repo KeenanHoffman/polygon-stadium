@@ -69,7 +69,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             }
           });
         } else {
-          instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Chrome or Firefox';
+          instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Google Chrome,Mozilla Firefox, or Microsoft Edge';
         }
 
         var hud = {
