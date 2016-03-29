@@ -69,7 +69,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
             }
           });
         } else {
-          instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Google Chrome,Mozilla Firefox, or Microsoft Edge';
+          instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API. Try using Google Chrome, Mozilla Firefox, or Microsoft Edge';
         }
 
         var hud = {
@@ -170,7 +170,7 @@ function beginGameLogic(userService, $timeout, apiUrl) {
                       }
                     })
                     .done(function(data) {
-                      document.querySelector('.alert').innerHTML = '<h4>Your game hase been saved!</h4>';
+                      document.querySelector('.alert').innerHTML = '<h4>Your game has been saved!</h4>';
                       document.querySelector('.alert').style.display = 'block';
                       setTimeout(function() {
                         document.querySelector('.alert').style.display = 'none';
