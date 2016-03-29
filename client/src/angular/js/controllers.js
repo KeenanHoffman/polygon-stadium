@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('polygonStadiumApp')
-  .controller('NavbarController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', navbarController])
+  .controller('NavbarController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', '$route', navbarController])
   .controller('LoginController', ['$scope', '$http', '$window', "apiUrl", loginController])
   .controller('ProfileController', ['$scope', '$http', '$window', 'userService', "apiUrl", profileController])
   .controller('GameController', ['$scope', '$http', '$window', 'jwtHelper', 'userService', '$compile', "apiUrl", gameController])
   .controller('SignupController', ['$scope', '$http', '$window', "apiUrl", signupController])
   .controller('LeaderboardController', ['$scope', '$http', "apiUrl", leaderboardController]);
 
-function navbarController($scope, $http, $window, jwtHelper, userService) {
+function navbarController($scope, $http, $window, jwtHelper, userService, $route) {
   $(document).ready(function() {
     $.material.init();
     $('.dropdown-toggle').dropdown();
@@ -24,7 +24,12 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
     }
   };
   vm.goHome = function() {
-    $window.location.href = '#/';
+    if (vm.user.id === 'none') {
+      $window.location.href = '#/';
+    } else {
+      $window.location.href = '#/play';
+      $route.reload();
+    }
   };
   vm.goToProfile = function() {
     $window.location.href = '#/profile';
@@ -36,6 +41,7 @@ function navbarController($scope, $http, $window, jwtHelper, userService) {
   };
   vm.playNow = function() {
     $window.location.href = '#/play';
+    $route.reload();
   };
   vm.goToLeaderboard = function() {
     $window.location.href = '#/leaderboard';

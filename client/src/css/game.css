@@ -37,6 +37,12 @@ body {
   border: none;
 }
 .how-to-play {
+  position: absolute;
+  right: 3%;
+  width: 30%;
+  top: 10%;
+  bottom: 8%;
+  overflow: scroll;
   padding: 3rem;
   color: #212121;
   border-radius: 10px;
