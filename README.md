@@ -1,3 +1,3 @@
 # polygon-stadium
 
-![alt tag](./README_images/polygon.png =50x)
+![alt tag](./README_images/polygon.png)
