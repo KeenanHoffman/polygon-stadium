@@ -1,15 +1,9 @@
-Keenan Hoffman
+# POLYGON STADIUM
+### by Keenan Hoffman
+
 970-999-4223
 
 keenan.m.hoffman@gmail.com
-www.linkedin.com/in/keenanhoffman
-https://github.com/KeenanHoffman
-
-
-# POLYGON STADIUM
-### by Keenan Hoffman keenan.m.hoffman@gmail.com
-
-970-999-4223
 
 [LinkedIn](www.linkedin.com/in/keenanhoffman)
 
