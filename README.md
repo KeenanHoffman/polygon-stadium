@@ -19,7 +19,7 @@ Polygon Stadium if an arena based first person shooter, where players progress t
 
 The game itself was created with the 3D rendering library, THREE.js and the physics library, CANNON.js. The app uses Angular on the front-end and the game is wrapped in a directive. The Backend API was created with NODE, Postgrsql, and Express. It also uses an ORM called Waterline for database setup and queries.
 
-## Getting Started
+## Set the Game Up Locally
 Clone the game
 ```
 $ git clone git@github.com:KeenanHoffman/polygon-stadium.git
