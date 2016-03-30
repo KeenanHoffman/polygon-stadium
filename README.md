@@ -3,10 +3,8 @@
 # POLYGON STADIUM
 ### by Keenan Hoffman
 
-970-999-4223
-
+> 970-999-4223
 keenan.m.hoffman@gmail.com
-
 [LinkedIn](www.linkedin.com/in/keenanhoffman)
 
 ### [Play Polygon Stadium](https://polygonstadium.com)
