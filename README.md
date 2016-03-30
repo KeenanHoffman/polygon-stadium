@@ -1,4 +1,16 @@
+Keenan Hoffman
+970-999-4223
+
+keenan.m.hoffman@gmail.com
+www.linkedin.com/in/keenanhoffman
+https://github.com/KeenanHoffman
+
+
 # POLYGON STADIUM
+### by Keenan Hoffman
+970-999-4223
+keenan.m.hoffman@gmail.com
+[LinkedIn](www.linkedin.com/in/keenanhoffman)
 
 <img alt="loading..." src=./README_images/polygon.png width=172 height=121.5 />
 
