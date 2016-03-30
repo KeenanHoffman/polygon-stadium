@@ -2,7 +2,7 @@
 
 <img src=./README_images/polygon.png width=172 height=121.5 />
 
-[a link](https://polygonstadium.com)
+[Play Polygon Stadium](https://polygonstadium.com)
 
 Polygon Stadium if an arena based first person shooter, where players progress through rounds of increasing difficulty destroying enemies.
 
