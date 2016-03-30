@@ -7,7 +7,7 @@
 
 > keenan.m.hoffman@gmail.com
 
-> [LinkedIn](www.linkedin.com/in/keenanhoffman)
+> [LinkedIn](https://www.linkedin.com/in/keenanhoffman)
 
 ### [Play Polygon Stadium](https://polygonstadium.com)
 
