@@ -15,21 +15,24 @@ The game itself was created with the 3D rendering library, THREE.js and the phys
 ## Getting Started
 Clone the game
 ```
-git clone git@github.com:KeenanHoffman/polygon-stadium.git
+$ git clone git@github.com:KeenanHoffman/polygon-stadium.git
+$ cd polygon-stadium
 ```
 Install Node Modules
 ```
-npm install
+$ npm install
 ```
 Install Bower Components
 ```
-cd client
-bower install
+$ cd client
+$ bower install
 ```
-Start Gulp
+Build the Dist With Gulp
 ```
-gulp
+$ gulp
 ```
+Start the Front-End Server From Within the **dist** Directory
+Start the Back-End Server From Within the **server** Directory
 
 <img alt="loading..." src=./README_images/screenshot_1.png width=900 />
 
