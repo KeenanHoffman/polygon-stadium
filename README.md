@@ -6,6 +6,6 @@
 
 Polygon Stadium if an arena based first person shooter, where players progress through rounds of increasing difficulty destroying enemies.
 
-The game itself was created with a 3D rendering library called THREE.js and a physics library called CANNON.js. I used Angular to create the front-end and wrapped the game in a directive. The Backend API was created with NODE, Postgrsql, and Express. It also an ORM called waterline for database setup and queries.
+The game itself was created with the 3D rendering library, THREE.js and the physics library, CANNON.js. The app uses Angular on the front-end and the game is wrapped in a directive. The Backend API was created with NODE, Postgrsql, and Express. It also uses an ORM called Waterline for database setup and queries.
 
 <img src=./README_images/screenshot_1.png width=900 />
