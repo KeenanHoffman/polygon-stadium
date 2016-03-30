@@ -1,4 +1,6 @@
-# POLYGON STADIUM <img alt="loading..." src=./README_images/polygon.png width=172 height=121.5 />
+<img alt="loading..." src=./README_images/polygon.png width=172 height=121.5 />
+
+# POLYGON STADIUM
 ### by Keenan Hoffman
 
 970-999-4223
