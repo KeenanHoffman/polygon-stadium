@@ -9,7 +9,7 @@ keenan.m.hoffman@gmail.com
 
 [LinkedIn](www.linkedin.com/in/keenanhoffman)
 
-[Play Polygon Stadium](https://polygonstadium.com)
+### [Play Polygon Stadium](https://polygonstadium.com)
 
 ## Description
 
