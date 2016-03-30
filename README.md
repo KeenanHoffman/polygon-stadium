@@ -32,6 +32,7 @@ Build the Dist With Gulp
 $ gulp
 ```
 Start the Front-End Server From Within the **dist** Directory
+
 Start the Back-End Server From Within the **server** Directory
 
 <img alt="loading..." src=./README_images/screenshot_1.png width=900 />
