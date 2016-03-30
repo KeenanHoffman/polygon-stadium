@@ -14,6 +14,26 @@ The game itself was created with the 3D rendering library, THREE.js and the phys
 
 <img alt="loading..." src=./README_images/screenshot_1.png width=900 />
 
+## How to Play
+### Objectives
+* Destroy enemies by shooting.
+* Complete rounds by destroying all enemies.
+* Compete for the top scores.
+* Compete to reach the highest rounds.
+### Movement
+* W A S D Moves
+* SPACE Jumps
+* MOUSE Looks
+* CLICKING Shoots
+* ESCAPE Pauses
+### Additional Info
+* Your game is saved after each round and after you lose...
+* Once you beat rounds that are multiples of 5 you can start from those rounds if you lose.
+* Enemy difficulty increases as you progress through rounds.
+### Tips
+* Click both left and right to increase firing speed.
+* Hugging the wall makes it difficult for enemies to surprise you.
+
 ## Full Tech List
 * [THREE.js](http://threejs.org)
 * [CANNON.js](http://www.cannonjs.org)
