@@ -1,4 +1,4 @@
-# POLYGON STADIUM
+# POLYGON STADIUM <img alt="loading..." src=./README_images/polygon.png width=172 height=121.5 />
 ### by Keenan Hoffman
 
 970-999-4223
@@ -6,8 +6,6 @@
 keenan.m.hoffman@gmail.com
 
 [LinkedIn](www.linkedin.com/in/keenanhoffman)
-
-<img alt="loading..." src=./README_images/polygon.png width=172 height=121.5 />
 
 [Play Polygon Stadium](https://polygonstadium.com)
 
