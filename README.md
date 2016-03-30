@@ -21,7 +21,7 @@ The game itself was created with the 3D rendering library, THREE.js and the phys
 * [AngularJS](https://angularjs.org)
 * [Express](http://expressjs.com)
 * [Waterline](http://sailsjs.org/documentation/reference/waterline-orm)
-* [Heroku](https://dashboard.heroku.com)
+* [Heroku](https://heroku.com)
 * [Firebase](https://www.firebase.com)
 * [Bootstrap](http://getbootstrap.com)
 * [Gulp](http://gulpjs.com)
