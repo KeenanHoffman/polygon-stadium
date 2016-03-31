@@ -13,7 +13,7 @@
 
 ## Description
 
-Polygon Stadium if an arena based first person shooter, where players progress through rounds of increasing difficulty destroying enemies.
+Polygon Stadium is an arena based first person shooter, where players progress through rounds of increasing difficulty destroying enemies.
 
 ## Tech Notes
 
