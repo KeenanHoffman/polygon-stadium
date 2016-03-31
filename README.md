@@ -78,3 +78,13 @@ Start the Back-End Server From Within the **server** Directory
 * [Firebase](https://www.firebase.com)
 * [Bootstrap](http://getbootstrap.com)
 * [Gulp](http://gulpjs.com)
+ 
+## Contact Me
+
+### Keenan Hoffman
+
+> 970-999-4223
+
+> keenan.m.hoffman@gmail.com
+
+> [LinkedIn](https://www.linkedin.com/in/keenanhoffman)
